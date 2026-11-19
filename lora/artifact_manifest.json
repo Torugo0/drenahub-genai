@@ -1,0 +1,10 @@
+{
+  "artifact_version": "drenaassist-v2-lora-pilot1",
+  "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "sha256": {
+    "adapter/adapter_model.safetensors": "fed4b6ced9e9e837e65aeb032c3757285dbdae88d0236b66a3a55ed6c45507bf",
+    "adapter/adapter_config.json": "3ae2ac1c7b618c0cecf01b6d2e0d8f2c0b5df6296c4d10952591b72ce2325a50",
+    "training_manifest.json": "07506f76625f873c190349242ec14c84a0d97a937db20507f47b26dc75d75c16"
+  }
+}

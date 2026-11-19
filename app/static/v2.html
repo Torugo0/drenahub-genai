@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102637">
+  <meta name="description" content="Console V2 da DrenaHub para consulta rastreável das fontes DrenaData e DrenaVision.">
+  <title>Console de evidências · DrenaHub</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23102637'/%3E%3Cpath d='M32 7C25 18 14 28 14 40a18 18 0 0 0 36 0C50 28 39 18 32 7Z' fill='%2316a6a0'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/v2.css">
+  <script src="/static/v2.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/v2/console" aria-label="DrenaHub, console de evidências">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 7C25 18 14 28 14 40a18 18 0 0 0 36 0C50 28 39 18 32 7Z" fill="currentColor"/><path d="M20 42c5-4 8-4 13 0s8 4 12 0M21 49c5-3 8-3 12 0s7 3 11 0" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3"/></svg>
+        <span>DRENA<span>HUB</span><small>Central de inteligência em drenagem</small></span>
+      </a>
+      <nav class="topnav" aria-label="Navegação principal">
+        <a class="nav-current" href="/v2/console" aria-current="page">Console V2</a>
+        <a href="#agente">Agente de resposta</a>
+        <a href="/">Assistente atual</a>
+        <a href="/docs">API</a>
+      </nav>
+      <span class="topbar-tag"><span class="tag-dot"></span> Integração local</span>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow eyebrow-light"><span></span> DrenaHub / DrenaAssist V2</p>
+          <h1 id="hero-title">Cada evidência no seu contexto.</h1>
+          <p class="hero-lead">Consulte os registros da DrenaData e da DrenaVision com horário, origem e referência da fonte. Este painel mostra o que cada sistema forneceu, sem inferir um vínculo entre IDs externos.</p>
+          <div class="hero-actions">
+            <a class="button button-mint" href="#fontes">Explorar fontes <span aria-hidden="true">↗</span></a>
+            <a class="hero-link" href="#como-ler">Como ler as evidências <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="DrenaData e DrenaVision enviam evidências separadas ao console DrenaAssist">
+          <div class="visual-grid" aria-hidden="true"></div>
+          <div class="visual-halo" aria-hidden="true"></div>
+          <div class="visual-center">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 7C25 18 14 28 14 40a18 18 0 0 0 36 0C50 28 39 18 32 7Z" fill="currentColor"/><path d="M20 42c5-4 8-4 13 0s8 4 12 0M21 49c5-3 8-3 12 0s7 3 11 0" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3"/></svg>
+            <strong>DrenaAssist</strong><span>Console de evidências</span>
+          </div>
+          <div class="visual-source visual-data"><span class="visual-icon">≋</span><span><strong>DrenaData</strong><small>Leituras e chuva</small></span></div>
+          <div class="visual-source visual-vision"><span class="visual-icon">◎</span><span><strong>DrenaVision</strong><small>Eventos de análise</small></span></div>
+          <div class="visual-caption">Fontes independentes · vínculos somente verificados</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="main-wrap">
+      <section class="readiness" aria-label="Estado da integração">
+        <div class="readiness-intro"><span class="readiness-icon">↗</span><div><strong>Estado da integração</strong><span>Configuração da instância local, sem prova de disponibilidade.</span></div></div>
+        <div class="readiness-items">
+          <div class="readiness-item"><span>DrenaData</span><strong id="source-data-status" class="source-state state-loading">Verificando…</strong></div>
+          <div class="readiness-item"><span>DrenaVision</span><strong id="source-vision-status" class="source-state state-loading">Verificando…</strong></div>
+          <div class="readiness-item"><span>Treino LoRA V2</span><strong id="training-status" class="source-state state-pending">Pendente</strong></div>
+        </div>
+      </section>
+
+      <section id="fontes" class="workspace-section" aria-labelledby="sources-title">
+        <div class="section-heading"><div><p class="eyebrow">01 / Fontes de dados</p><h2 id="sources-title">Explore as evidências</h2><p>As medições são carregadas da API local; nenhum valor operacional é preenchido por exemplo.</p></div><span class="section-side-note">Consultas somente leitura</span></div>
+        <div class="source-grid">
+          <article class="source-card" aria-labelledby="data-title">
+            <div class="card-header"><div class="card-icon icon-data" aria-hidden="true">≋</div><div><span class="card-kicker">SENSOR + HISTÓRICO</span><h3 id="data-title">DrenaData</h3></div><span class="card-number">01</span></div>
+            <p class="card-description">Consulte a última leitura de um ponto da exportação Ouro. Os sensores e pontos deste piloto são sintéticos.</p>
+            <form id="data-form" class="query-form">
+              <label for="data-point-id">ID externo da DrenaData</label>
+              <div class="field-row"><select id="data-point-id" name="point_id" required disabled><option value="">Carregando catálogo de pontos…</option></select><button type="submit" class="button button-navy" disabled>Consultar <span aria-hidden="true">→</span></button></div>
+              <p id="data-catalog-hint" class="field-hint">Os IDs serão carregados da exportação configurada nesta instância.</p>
+            </form>
+            <div id="data-result" class="result-region" role="status" aria-live="polite"><div class="result-placeholder"><span aria-hidden="true">↗</span><strong>Pronto para consultar</strong><p>Selecione um ponto para ver a leitura mais recente e sua proveniência.</p></div></div>
+          </article>
+
+          <article class="source-card" aria-labelledby="vision-title">
+            <div class="card-header"><div class="card-icon icon-vision" aria-hidden="true">◎</div><div><span class="card-kicker">ANÁLISE VISUAL</span><h3 id="vision-title">DrenaVision</h3></div><span class="card-number">02</span></div>
+            <p class="card-description">Busque eventos pelo ID externo usado na DrenaVision. A origem da imagem não é atestada por esta integração.</p>
+            <form id="vision-form" class="query-form">
+              <label for="vision-point-id">ID externo da DrenaVision</label>
+              <div class="field-row"><input id="vision-point-id" name="point_id" type="text" maxlength="80" required autocomplete="off" placeholder="Digite um point_id da DrenaVision"><button type="submit" class="button button-navy">Consultar <span aria-hidden="true">→</span></button></div>
+              <p class="field-hint">Exemplo de teste: <code>garagem-a-ralo-1</code>. É apenas um rótulo de teste; não representa vínculo com a DrenaData.</p>
+            </form>
+            <div id="vision-result" class="result-region" role="status" aria-live="polite"><div class="result-placeholder"><span aria-hidden="true">◎</span><strong>Aguardando um ID</strong><p>Informe o identificador registrado na DrenaVision para listar os eventos.</p></div></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="rain-section" aria-labelledby="rain-title">
+        <div class="rain-icon" aria-hidden="true">☂</div>
+        <div class="rain-copy"><span class="card-kicker">CONTEXTO METEOROLÓGICO</span><h2 id="rain-title">Chuva histórica da grade piloto</h2><p>A DrenaData inclui observações reais da Open-Meteo. São dados da grade histórica de São Paulo, não medições em cada ralo.</p></div>
+        <button id="rain-button" type="button" class="button button-outline">Ver última observação <span aria-hidden="true">→</span></button>
+        <div id="rain-result" class="rain-result" role="status" aria-live="polite"></div>
+      </section>
+
+      <section id="agente" class="agent-section" aria-labelledby="agent-title">
+        <div class="section-heading"><div><p class="eyebrow">02 / Resposta assistida</p><h2 id="agent-title">Agente de resposta</h2><p>Uma pergunta, uma fonte de cada vez. O resultado gerado é um rascunho e exige revisão humana.</p></div><span class="section-side-note">Consulta + geração local</span></div>
+        <div class="agent-shell">
+          <div class="agent-intro"><span class="agent-symbol" aria-hidden="true">✳</span><span class="agent-kicker">DRENAASSIST V2</span><h3>Da evidência ao rascunho.</h3><p>O agente consulta a fonte selecionada e usa somente os registros retornados como contexto. IDs de sistemas diferentes não são associados automaticamente.</p><ol><li><span>01</span> Escolha a fonte e o ID externo</li><li><span>02</span> Faça uma pergunta específica</li><li><span>03</span> Revise o texto e as evidências</li></ol><div class="agent-intro-note">A revisão humana é obrigatória antes de usar qualquer rascunho.</div></div>
+          <form id="agent-form" class="agent-form">
+            <div class="agent-form-head"><div><span class="card-kicker">NOVA CONSULTA</span><h3>Monte sua pergunta</h3></div><span class="agent-form-icon" aria-hidden="true">↗</span></div>
+            <div class="agent-fields">
+              <label for="agent-source">Fonte de evidências</label>
+              <select id="agent-source" name="source" required><option value="drenadata_latest">DrenaData · última leitura</option><option value="drenavision_events">DrenaVision · eventos</option><option value="rain_history">Chuva histórica · última hora disponível</option></select>
+              <div id="agent-point-field" class="agent-point-field"><label for="agent-point-id">ID externo da fonte selecionada</label><input id="agent-point-id" name="source_point_id" type="text" maxlength="80" required autocomplete="off" list="agent-data-points" placeholder="Carregando IDs da DrenaData"><datalist id="agent-data-points"></datalist><p id="agent-point-hint" class="field-hint">IDs da DrenaData carregados do catálogo desta instância.</p></div>
+              <label for="agent-question">Pergunta</label>
+              <textarea id="agent-question" name="question" minlength="3" maxlength="500" rows="4" required placeholder="O que a última leitura informa sobre este ponto?"></textarea>
+              <fieldset class="agent-mode"><legend>Modelo local</legend><div class="mode-options"><label class="mode-option"><input type="radio" name="model_mode" value="base" checked><span><strong>Base</strong><small>Modelo sem adapter</small></span></label><label class="mode-option"><input id="agent-mode-adapted" type="radio" name="model_mode" value="adapted" disabled><span><strong>Adaptado</strong><small>LoRA V2</small></span></label></div><p id="adapted-mode-note" class="field-hint">Verificando disponibilidade da inferência adaptada.</p></fieldset>
+            </div>
+            <button id="agent-submit" type="submit" class="button button-navy agent-submit">Gerar rascunho <span aria-hidden="true">→</span></button>
+            <p class="agent-form-footnote">O resultado nunca é uma decisão operacional confirmada.</p>
+          </form>
+        </div>
+        <div id="agent-result" class="agent-result" role="status" aria-live="polite"><div class="agent-result-placeholder"><span aria-hidden="true">✳</span><div><strong>O rascunho aparecerá aqui</strong><p>Envie uma pergunta para ver a resposta e os registros usados como evidência.</p></div></div></div>
+      </section>
+
+      <section id="como-ler" class="guide-section" aria-labelledby="guide-title">
+        <div class="section-heading"><div><p class="eyebrow">03 / Transparência</p><h2 id="guide-title">Como ler o painel</h2></div></div>
+        <div class="guide-grid">
+          <div class="guide-item"><span class="origin-chip origin-real">Real</span><h3>Observação da fonte</h3><p>Chuva histórica fornecida pela Open-Meteo, com referência e escopo da grade informados no registro.</p></div>
+          <div class="guide-item"><span class="origin-chip origin-synthetic">Sintético</span><h3>Dados de piloto</h3><p>Leituras de nível e pontos de teste da DrenaData. Não representam sensores físicos em operação.</p></div>
+          <div class="guide-item"><span class="origin-chip origin-unverified">Não verificada</span><h3>Imagem sem origem atestada</h3><p>O evento da DrenaVision registra a hora da análise. Essa hora não comprova quando a imagem foi capturada.</p></div>
+        </div>
+        <div class="guide-note"><span aria-hidden="true">ⓘ</span><p><strong>Identidade dos pontos:</strong> um ID da DrenaData e um ID da DrenaVision só indicam o mesmo ponto físico quando existe um vínculo verificado no cadastro V2. O painel não faz correspondência por nome. <strong>Treino do modelo V2:</strong> <span id="training-explanation">verificando estado na API local.</span> A seção Fontes de dados lê registros diretamente; o Agente de resposta gera apenas rascunhos para revisão humana.</p></div>
+      </section>
+    </div>
+  </main>
+  <footer class="footer"><span>DRENAHUB <span class="footer-separator">/</span> Console local V2</span><span>Evidências rastreáveis · decisões humanas</span></footer>
+</body>
+</html>

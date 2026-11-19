@@ -1,0 +1,35 @@
+{
+  "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "model_path_used": "/home/vitor/drenaassist-v2-train/model",
+  "license": "Apache-2.0",
+  "method": "QLoRA NF4, r=8, alpha=16, q/k/v/o projections",
+  "train_examples": 84,
+  "dev_examples": 18,
+  "train_sha256": "f81da38ac6d9776218c6106eccedef4a931a5de753c560a344a9a137e3925b42",
+  "dev_sha256": "c1f074d81286b63e4cbf9b6b0b213baff18791bf2cdc57ce38cf6a90a0491569",
+  "max_length": 768,
+  "epochs": 2.0,
+  "torch": "2.8.0+cu128",
+  "transformers": "4.57.1",
+  "peft": "0.17.1",
+  "bitsandbytes": "0.48.1",
+  "gpu": "NVIDIA GeForce RTX 4060",
+  "dtype": "torch.bfloat16",
+  "elapsed_s": 110.41,
+  "train_metrics": {
+    "train_runtime": 97.1717,
+    "train_samples_per_second": 1.729,
+    "train_steps_per_second": 0.432,
+    "total_flos": 546233940264960.0,
+    "train_loss": 0.6244696506432125,
+    "epoch": 2.0
+  },
+  "eval_metrics": {
+    "eval_loss": 0.4362044632434845,
+    "eval_runtime": 2.9427,
+    "eval_samples_per_second": 6.117,
+    "eval_steps_per_second": 6.117,
+    "epoch": 2.0
+  }
+}

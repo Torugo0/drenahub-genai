@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from .assistant import ask
 from .models import AskRequest, AskResponse, Configuration
 from .ollama_client import OllamaClient
+from lora.api import router as v2_router
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,11 +24,17 @@ app = FastAPI(title="DrenaAssist", version="0.1.0", description="Assistente loca
 origins = [item.strip() for item in os.getenv("DRENA_CORS_ORIGINS", "http://localhost:5173,http://localhost:3000").split(",") if item.strip()]
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=False, allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
 app.mount("/static", StaticFiles(directory=STATIC_PATH), name="static")
+app.include_router(v2_router)
 
 
 @app.get("/", include_in_schema=False)
 def home() -> FileResponse:
     return FileResponse(STATIC_PATH / "index.html")
+
+
+@app.get("/v2/console", include_in_schema=False)
+def v2_console() -> FileResponse:
+    return FileResponse(STATIC_PATH / "v2.html")
 
 
 @app.get("/health")

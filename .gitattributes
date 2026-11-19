@@ -1,2 +1,5 @@
-avaliacao_v2/dataset/*.jsonl text eol=lf
-avaliacao_v2/dataset/manifest.json text eol=lf
+lora/dataset/*.jsonl text eol=lf
+lora/dataset/manifest.json text eol=lf
+lora/*.json text eol=lf
+lora/adapter/*.json text eol=lf
+*.safetensors binary

@@ -1,0 +1,29 @@
+{
+  "experiment": "V2 base versus LoRA, mesmo prompt e checkpoint",
+  "holdout_scope": "Entidades e horários novos nos mesmos seis templates; não prova generalização independente",
+  "not_measured": [
+    "RAG",
+    "agente",
+    "validade semântica do texto livre",
+    "segurança operacional"
+  ],
+  "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "model_path_used": "/home/vitor/drenaassist-v2-train/model",
+  "adapter": "/home/vitor/drenaassist-v2-train/run1/adapter",
+  "final_sha256": "ebb6f074afa2dbc70d2c2cae911d047dd4ed3be4cae6cc48133885b09d434566",
+  "train_sha256": "f81da38ac6d9776218c6106eccedef4a931a5de753c560a344a9a137e3925b42",
+  "dev_sha256": "c1f074d81286b63e4cbf9b6b0b213baff18791bf2cdc57ce38cf6a90a0491569",
+  "cases": 24,
+  "seed": 42,
+  "do_sample": false,
+  "num_beams": 1,
+  "adversarial_cases": 6,
+  "max_new_tokens": 256,
+  "torch": "2.8.0+cu128",
+  "transformers": "4.57.1",
+  "peft": "0.17.1",
+  "bitsandbytes": "0.48.1",
+  "gpu": "NVIDIA GeForce RTX 4060",
+  "dtype": "torch.bfloat16"
+}
