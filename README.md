@@ -12,7 +12,7 @@ O DrenaAssist responde a perguntas sobre inspeção e manutenção de drenagem, 
 | `rag` | Pergunta e trechos documentais recuperados | Não |
 | `agent` | Pergunta, trechos documentais e resultados de ferramentas de leitura escolhidas conforme a solicitação | Sim |
 
-A especialização foi feita por contexto, recuperação e ferramentas. **Não houve treinamento ou ajuste dos pesos.** A comparação usa o mesmo modelo base e os mesmos parâmetros de geração; documentos e casos são versionados neste repositório.
+A especialização foi feita por contexto, recuperação e ferramentas. **Não houve treinamento ou ajuste dos pesos da LLM.** A comparação usa o mesmo modelo base e os mesmos parâmetros de geração; documentos e casos são versionados neste repositório. O slide da rubrica aceita **LoRA ou agente** para o critério de especialização, mas o objetivo geral também usa a expressão **“treinar uma LLM local”**. Esta implementação não demonstra treinamento em sentido técnico estrito; o atendimento literal dessa frase permanece sujeito à interpretação do professor. Índice de embeddings, RAG e chamadas de ferramentas não devem ser descritos como treinamento da LLM.
 
 ## Tecnologia e dados
 
