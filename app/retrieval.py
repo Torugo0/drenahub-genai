@@ -1,5 +1,6 @@
 """Busca vetorial local com Sentence Transformers e similaridade cosseno."""
 
+import re
 import hashlib
 import json
 import os
@@ -91,11 +92,12 @@ class Retriever:
         self._matrix = matrix
         return matrix
 
-    def search(self, query: str, top_k: int = 3, threshold: float | None = None) -> list[RetrievedChunk]:
+    def search(self, query: str, top_k: int = 3, threshold: float | None = None, expand: bool = True) -> list[RetrievedChunk]:
         if not query.strip():
             return []
         matrix = self.build_index()
-        vector = np.asarray(self.model.encode(query, normalize_embeddings=True, convert_to_numpy=True), dtype=np.float32).reshape(-1)
+        text = expand_query(query) if expand else query
+        vector = np.asarray(self.model.encode(text, normalize_embeddings=True, convert_to_numpy=True), dtype=np.float32).reshape(-1)
         vector /= max(float(np.linalg.norm(vector)), 1e-12)
         scores = matrix @ vector
         ranking = np.argsort(-scores, kind="stable")[: max(0, min(top_k, len(self.chunks)))]
@@ -104,6 +106,26 @@ class Retriever:
             for rank, index in enumerate(ranking, start=1)
             if threshold is None or float(scores[index]) >= threshold
         ]
+
+
+# Termos do dia a dia do zelador -> termos usados nos manuais técnicos.
+# A base fala em "caixa de captação" e "grelha"; quem pergunta fala "ralo" e "bueiro".
+_POPULAR_TERMS: tuple[tuple[re.Pattern[str], str], ...] = tuple(
+    (re.compile(pattern, re.IGNORECASE), technical)
+    for pattern, technical in (
+        (r"\b(ralos?|bueiros?|boca[s]?[ -]de[ -]lobo|sarjetas?)\b", "caixa de captação e grelha de drenagem pluvial"),
+        (r"\b(entupid[oa]s?|entupiment[oa]s?|entupir|desentupir|desentupiment[oa])\b", "obstrução, limpeza e remoção de detritos e sedimentos"),
+        (r"\b(lixo|sujeira|folhas)\b", "detritos e resíduos"),
+        (r"\b(alagamentos?|alagad[oa]s?|enchentes?)\b", "inundação"),
+        (r"\b(valetas?)\b", "canais e valas"),
+    )
+)
+
+
+def expand_query(query: str) -> str:
+    """Acrescenta à pergunta os termos técnicos equivalentes às palavras populares."""
+    extras = [technical for pattern, technical in _POPULAR_TERMS if pattern.search(query)]
+    return f"{query} ({'; '.join(extras)})" if extras else query
 
 
 @lru_cache(maxsize=1)

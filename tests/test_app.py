@@ -237,3 +237,25 @@ def test_trained_agent_plans_with_base_and_answers_with_trained_model(tmp_path, 
     assert len(base.calls) == 1 and len(trained.calls) == 1
     # O modelo treinado recebe exatamente o prompt do agente, como no treino.
     assert "Configuração: agent." in trained.calls[0][1]["content"]
+
+
+def test_popular_terms_are_expanded_for_search():
+    from app.retrieval import expand_query
+    assert "caixa de captação" in expand_query("Como limpar um ralo?")
+    assert "obstrução" in expand_query("O bueiro está entupido")
+    assert expand_query("Qual a frequência de inspeção?") == "Qual a frequência de inspeção?"
+
+
+def test_leading_refusal_sentence_is_removed_from_real_answer(tmp_path, monkeypatch):
+    monkeypatch.setenv("DRENA_TOOL_LOG_PATH", str(tmp_path / "calls.jsonl"))
+
+    class OneChunkRetriever:
+        def search(self, query, top_k=3, threshold=None):
+            from app.retrieval import RetrievedChunk, load_chunks
+            chunk = next(c for c in load_chunks() if c.chunk_id == "EPA-CB-02")
+            return [RetrievedChunk(chunk=chunk, score=0.7, rank=1)]
+
+    client = FakeClient([json.dumps({"answer": "Não consta nos dados disponíveis. Limpe a caixa de captação, não só a grelha.", "refused": False, "source_ids": ["EPA-CB-02"], "reason": "Trecho consultado.", "suggested_actions": []})])
+    result = ask("Como limpar um ralo?", "rag", client=client, retriever=OneChunkRetriever())
+    assert result.refused is False
+    assert result.answer == "Limpe a caixa de captação, não só a grelha."

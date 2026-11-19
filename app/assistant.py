@@ -335,6 +335,9 @@ def ask(
         model_latency_ms += answer_latency
         parsed = _parse_json(raw_answer)
         answer = str(parsed.get("answer", "")).strip()
+        if not parsed.get("refused") and answer.startswith(REFUSAL) and len(answer) > len(REFUSAL) + 20:
+            # O modelo às vezes abre com a frase de recusa e responde em seguida; fica só a resposta.
+            answer = answer[len(REFUSAL):].strip()
         refused = bool(parsed.get("refused", False))
         reason = str(parsed.get("reason", "")).strip()
         action_value = parsed.get("suggested_actions", [])
