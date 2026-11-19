@@ -265,3 +265,25 @@ textarea {
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* Escolha automática: trilha da resposta */
+.composer-foot { align-items: center; }
+.auto-hint { margin: 0; font-size: .86rem; color: var(--ink-soft); max-width: 52ch; }
+.advanced { margin-top: 10px; font-size: .86rem; }
+.advanced summary { cursor: pointer; color: var(--ink-soft); width: max-content; }
+.advanced summary:hover { color: var(--water); }
+.advanced .modes { margin-top: 10px; }
+.path { list-style: none; margin: 4px 0 10px; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.step { display: grid; grid-template-columns: 18px auto 1fr; gap: 8px; align-items: center; font-size: .84rem; color: var(--ink-soft); }
+.step strong { font-family: var(--sign); font-weight: 600; color: var(--ink); }
+.step-mark { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line); display: inline-block; }
+.step.is-running .step-mark { border-color: var(--water); border-top-color: transparent; animation: girar .8s linear infinite; }
+.step.is-chosen .step-mark { background: var(--ok); border-color: var(--ok); position: relative; }
+.step.is-chosen .step-mark::after { content: ""; position: absolute; left: 3px; top: 0; width: 4px; height: 7px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.step.is-refused .step-mark, .step.is-error .step-mark { border-color: #A7B0AC; background: #E2E5E1; }
+.step.is-refused strong, .step.is-error strong { color: var(--ink-soft); text-decoration: line-through; text-decoration-thickness: 1px; }
+.step.is-chosen .step-note { color: var(--ok); }
+.entry.is-pending .entry-body:empty { display: none; }
+.model-badge { display: inline-block; font-family: var(--sign); font-weight: 600; font-size: .78rem; background: var(--water-pale); color: var(--ink); padding: 1px 8px; border-radius: 999px; margin-right: 4px; }
+@keyframes girar { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .step.is-running .step-mark { animation: none; border-top-color: var(--water); } }

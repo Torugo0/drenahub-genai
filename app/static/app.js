@@ -16,7 +16,6 @@
   const feedList = $("#answer-content");
 
   const GAUGE_MAX_CM = 20;
-  const modeNames = { agent: "Agente", agent_trained: "Agente treinado", rag: "Só documentos", baseline: "Sem contexto" };
   const accents = {
     "Galpao Norte": "Galpão Norte",
     "Condominio Ipe": "Condomínio Ipê",
@@ -90,10 +89,11 @@
       dot.classList.toggle("is-ready", Boolean(health.ollama_model_available));
       dot.classList.toggle("is-unavailable", !health.ollama_model_available);
       label.textContent = health.ollama_model_available ? "Modelo local ativo" : "Modelo local desligado. Inicie o Ollama";
+      trainedAvailable = Boolean(health.trained_model_available);
       const trainedInput = form.querySelector('input[value="agent_trained"]');
-      trainedInput.disabled = !health.trained_model_available;
-      $("#trained-note").hidden = Boolean(health.trained_model_available);
-      if (trainedInput.disabled && trainedInput.checked) form.elements.configuration.value = "agent";
+      trainedInput.disabled = !trainedAvailable;
+      $("#trained-note").hidden = trainedAvailable;
+      if (trainedInput.disabled && trainedInput.checked) form.elements.configuration.value = "auto";
     } catch {
       dot.classList.add("is-unavailable");
       label.textContent = "API sem resposta";
@@ -222,7 +222,6 @@
     if (pointSelect.value === pointId) { resetContext(); return; }
     locationSelect.value = point.location.id;
     fillPoints(point.id);
-    if (form.elements.configuration.value !== "agent_trained") form.elements.configuration.value = "agent";
     syncSelection();
     question.focus();
   }
@@ -242,7 +241,6 @@
         locationSelect.value = item.location || "";
         fillPoints();
         syncSelection();
-        form.elements.configuration.value = item.mode;
         question.value = item.text;
         form.requestSubmit();
       });
@@ -364,29 +362,88 @@
     return [details];
   }
 
-  function addEntry(asked, mode, data, errorMessage) {
+  /* Escolha automática: tenta os modos com evidência em ordem e fica com a primeira resposta verificada */
+  const stepInfo = {
+    agent: { name: "Agente", detail: "Qwen2.5-3B consultando manuais e registros" },
+    rag: { name: "Só documentos", detail: "Qwen2.5-3B consultando só os manuais" },
+    agent_trained: { name: "Agente treinado", detail: "Qwen2.5-3B treinado pela equipe (LoRA)" },
+    baseline: { name: "Sem contexto", detail: "Qwen2.5-3B sem consultar nada" }
+  };
+  let trainedAvailable = false;
+
+  function plan(mode) {
+    if (mode !== "auto") return [mode];
+    return ["agent", "rag", ...(trainedAvailable ? ["agent_trained"] : [])];
+  }
+
+  const accepted = data => data && !data.refused && data.supported && Array.isArray(data.sources) && data.sources.length > 0;
+
+  function createEntry(asked) {
     feedEmpty.hidden = true;
-    const entry = node("li", "entry");
+    const entry = node("li", "entry is-pending");
     const head = node("div", "entry-question");
-    head.append(node("p", "", asked), node("span", "entry-mode", modeNames[mode]));
-    entry.append(head);
-    if (errorMessage) {
-      entry.classList.add("is-error");
-      const error = node("p", "entry-answer", errorMessage);
-      error.setAttribute("role", "alert");
-      entry.append(error);
-    } else {
-      if (data.refused) entry.classList.add("is-refusal");
-      entry.append(node("p", "entry-answer", data.answer || "Resposta vazia."));
-      if (data.reason && data.refused) entry.append(node("p", "entry-reason", data.reason));
-      const meta = [];
-      if (typeof data.metadata?.model === "string") meta.push(data.metadata.model);
-      if (Number.isFinite(data.metadata?.latency_ms)) meta.push(`${decimal.format(data.metadata.latency_ms / 1000)} s`);
-      if (meta.length) entry.append(node("p", "entry-meta", `Respondido por ${meta.join(" em ")}`));
-      entry.append(...sourceSection(data.sources), ...actionSection(data.suggested_actions), ...draftSection(data.draft_work_order), ...traceSection(data));
-    }
+    head.append(node("p", "", asked));
+    const path = node("ol", "path");
+    path.setAttribute("aria-label", "Caminho da resposta");
+    const body = node("div", "entry-body");
+    entry.append(head, path, body);
     feedList.prepend(entry);
     feed.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    return { entry, path, body };
+  }
+
+  function addStep(path, mode) {
+    const item = node("li", "step is-running");
+    item.append(node("span", "step-mark"), node("strong", "", stepInfo[mode].name), node("span", "step-note", stepInfo[mode].detail));
+    path.append(item);
+    return item;
+  }
+
+  function finishStep(item, state, note) {
+    item.className = `step is-${state}`;
+    item.querySelector(".step-note").textContent = note;
+  }
+
+  function fillAnswer(card, mode, data) {
+    const { entry, body } = card;
+    entry.classList.remove("is-pending");
+    if (data.refused) entry.classList.add("is-refusal");
+    body.append(node("p", "entry-answer", data.answer || "Resposta vazia."));
+    if (data.reason && data.refused) body.append(node("p", "entry-reason", data.reason));
+    const badge = node("p", "entry-meta");
+    badge.append(node("span", "model-badge", stepInfo[mode].name));
+    const seconds = Number.isFinite(data.metadata?.latency_ms) ? ` em ${decimal.format(data.metadata.latency_ms / 1000)} s` : "";
+    badge.append(` ${data.metadata?.model || ""}${seconds}`);
+    body.append(badge);
+    body.append(...sourceSection(data.sources), ...actionSection(data.suggested_actions), ...draftSection(data.draft_work_order), ...traceSection(data));
+  }
+
+  function fillError(card, message) {
+    card.entry.classList.remove("is-pending");
+    card.entry.classList.add("is-error");
+    const error = node("p", "entry-answer", message);
+    error.setAttribute("role", "alert");
+    card.body.append(error);
+  }
+
+  async function askOnce(text, mode, signal) {
+    const payload = { question: text, configuration: mode };
+    if (mode === "agent" || mode === "agent_trained") {
+      if (locationSelect.value) payload.location_id = locationSelect.value;
+      if (pointSelect.value) payload.point_id = pointSelect.value;
+    }
+    const response = await fetch("/assistant/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(response.status === 503 ? "modelo desligado" : response.status === 422 ? "pergunta ou ponto inválido" : `erro ${response.status}`);
+    }
+    if (typeof data.answer !== "string" || !Array.isArray(data.sources)) throw new Error("resposta em formato inesperado");
+    return data;
   }
 
   async function submitQuestion(event) {
@@ -399,40 +456,48 @@
       return;
     }
     const mode = form.elements.configuration.value;
-    const payload = { question: text, configuration: mode };
-    if (mode === "agent" || mode === "agent_trained") {
-      if (locationSelect.value) payload.location_id = locationSelect.value;
-      if (pointSelect.value) payload.point_id = pointSelect.value;
-    }
+    const steps = plan(mode);
     activeController = new AbortController();
     const controller = activeController;
     const timeout = window.setTimeout(() => controller.abort(), 300000);
     askButton.disabled = true;
     cancelButton.hidden = false;
     feed.setAttribute("aria-busy", "true");
-    requestStatus.textContent = mode === "agent_trained"
-      ? "Consultando o modelo treinado. Ele roda em 4 bits e leva de 20 a 40 s por resposta."
-      : "Consultando o modelo local. A primeira pergunta pode levar até 20 s.";
+    requestStatus.textContent = "Procurando a resposta. A primeira pergunta pode levar até 20 s.";
+    question.value = "";
+    const card = createEntry(text);
+    let chosen = null;
+    let fallback = null;
     try {
-      const response = await fetch("/assistant/ask", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-        signal: controller.signal
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        if (response.status === 503) throw new Error("O modelo local está desligado. Inicie o Ollama e pergunte de novo.");
-        throw new Error(response.status === 422 ? "A pergunta ou o ponto selecionado não foi aceito pela API." : `A API respondeu com erro ${response.status}.`);
+      for (const [index, step] of steps.entries()) {
+        const last = index === steps.length - 1;
+        const item = addStep(card.path, step);
+        try {
+          const data = await askOnce(text, step, controller.signal);
+          if (accepted(data) || steps.length === 1) {
+            finishStep(item, accepted(data) ? "chosen" : "refused", accepted(data) ? "resposta com fontes conferidas" : "sem evidência suficiente");
+            chosen = { mode: step, data };
+            break;
+          }
+          finishStep(item, "refused", last ? "sem evidência suficiente" : "sem evidência suficiente, tentando outro caminho");
+          fallback = fallback || { mode: step, data };
+        } catch (error) {
+          if (error.name === "AbortError") throw error;
+          finishStep(item, "error", `indisponível (${error.message})`);
+        }
       }
-      if (typeof data.answer !== "string" || !Array.isArray(data.sources)) throw new Error("A API devolveu uma resposta em formato inesperado.");
-      addEntry(text, mode, data);
-      requestStatus.textContent = data.refused ? "Sem evidência suficiente: a IA recusou responder." : "Resposta pronta.";
-      question.value = "";
+      const final = chosen || fallback;
+      if (final) {
+        fillAnswer(card, final.mode, final.data);
+        requestStatus.textContent = final.data.refused ? "Nenhum caminho encontrou evidência: a IA preferiu não responder." : "Resposta pronta.";
+      } else {
+        fillError(card, "Não foi possível consultar a IA. Verifique se o Ollama está aberto e pergunte de novo.");
+        requestStatus.textContent = "";
+        loadHealth();
+      }
     } catch (error) {
-      addEntry(text, mode, null, error.name === "AbortError" ? "Consulta cancelada." : error.message || "Falha ao consultar a IA.");
+      fillError(card, error.name === "AbortError" ? "Consulta cancelada." : error.message || "Falha ao consultar a IA.");
       requestStatus.textContent = "";
-      loadHealth();
     } finally {
       window.clearTimeout(timeout);
       activeController = null;
@@ -574,6 +639,7 @@
   showView();
   renderStarters();
   loadHealth();
+  window.setInterval(loadHealth, 30000);
   loadOverview();
   loadEvaluation();
   loadAudit();

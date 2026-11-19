@@ -62,19 +62,24 @@
         <textarea id="question" name="question" rows="3" minlength="3" maxlength="1000" placeholder="Pergunte sobre um ponto, uma ocorrência ou um procedimento. Ex.: O que registrar quando uma caixa de captação é limpa?" required></textarea>
 
         <div class="composer-foot">
-          <fieldset class="modes">
-            <legend>Como a IA responde</legend>
-            <label><input type="radio" name="configuration" value="agent" checked><span>Agente<small>documentos e registros</small></span></label>
-            <label id="trained-option"><input type="radio" name="configuration" value="agent_trained" disabled><span>Agente treinado<small>modelo com LoRA</small></span></label>
-            <label><input type="radio" name="configuration" value="rag"><span>Só documentos<small>RAG</small></span></label>
-            <label><input type="radio" name="configuration" value="baseline"><span>Sem contexto<small>para comparação</small></span></label>
-          </fieldset>
+          <p class="auto-hint">A IA escolhe sozinha a melhor forma de responder e mostra de onde veio cada informação.</p>
           <div class="send">
             <button class="button-primary" id="ask-button" type="submit">Perguntar</button>
             <button class="button-quiet" id="cancel-button" type="button" hidden>Cancelar</button>
           </div>
         </div>
-        <p class="trained-note" id="trained-note" hidden>O modo Agente treinado precisa do servidor do modelo treinado ligado (veja "Modelo treinado" no README).</p>
+        <details class="advanced" id="advanced">
+          <summary>Comparar modos (técnico)</summary>
+          <fieldset class="modes">
+            <legend>Responder sempre com</legend>
+            <label><input type="radio" name="configuration" value="auto" checked><span>Automático<small>escolhe sozinho</small></span></label>
+            <label><input type="radio" name="configuration" value="agent"><span>Agente<small>documentos e registros</small></span></label>
+            <label id="trained-option"><input type="radio" name="configuration" value="agent_trained" disabled><span>Agente treinado<small>modelo com LoRA</small></span></label>
+            <label><input type="radio" name="configuration" value="rag"><span>Só documentos<small>RAG</small></span></label>
+            <label><input type="radio" name="configuration" value="baseline"><span>Sem contexto<small>só para comparação</small></span></label>
+          </fieldset>
+          <p class="trained-note" id="trained-note" hidden>O Agente treinado está desligado neste computador. Ele precisa de GPU NVIDIA; o iniciar.bat liga o modelo automaticamente quando há uma.</p>
+        </details>
         <p class="request-status" id="request-status" role="status" aria-live="polite"></p>
       </form>
 

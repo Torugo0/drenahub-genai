@@ -9,10 +9,7 @@ Tudo roda no computador da equipe, com uma LLM local. Nenhuma pergunta ou regist
 
 Também treinamos a LLM localmente: ajustamos os pesos do mesmo Qwen2.5-3B da central com QLoRA, numa RTX 4060, para a tarefa exata da central, e comparamos o agente antes e depois do treino nas 40 perguntas do gabarito. As provas estão na [seção 9](#9-especialização-agente-e-treino-lora).
 
-| | |
-|---|---|
-| Repositório | https://github.com/Torugo0/drenahub-genai |
-| Vídeo de demonstração | (inserir link do vídeo aqui) |
+Repositório: https://github.com/Torugo0/drenahub-genai
 
 ## Integrantes
 
@@ -34,26 +31,44 @@ Também treinamos a LLM localmente: ajustamos os pesos do mesmo Qwen2.5-3B da ce
    ```
 3. Dê dois cliques em **`iniciar.bat`** (ou rode `.\iniciar.bat` no terminal).
 
-Na primeira vez, o script cria o ambiente Python, instala as dependências e baixa o modelo `qwen2.5:3b-instruct` (cerca de 2 GB), o que leva alguns minutos. Depois ele abre o navegador em **http://127.0.0.1:8001**. Nas próximas vezes, abre direto. Para parar, feche a janela ou use Ctrl+C.
+Use uma pasta fora do OneDrive ou de outras pastas sincronizadas (por exemplo `C:\drenahub-genai`): o ambiente Python ocupa vários GB, e a sincronização deixa a instalação e o carregamento dos modelos muito mais lentos.
 
-A primeira pergunta demora uns 20 segundos, porque os modelos são carregados na memória; as seguintes levam de 1 a 3 segundos com GPU.
+O `iniciar.bat` faz tudo sozinho:
+
+- cria o ambiente Python e instala as dependências;
+- confere o Ollama e baixa o modelo `qwen2.5:3b-instruct` (cerca de 2 GB);
+- se o computador tiver GPU NVIDIA, prepara e liga também o modelo treinado pela equipe, em segundo plano. Na primeira vez ele baixa cerca de 2,5 GB de bibliotecas e 6 GB do modelo. Sem GPU, essa etapa é pulada e a central funciona igual, só sem o modelo treinado. Para pular de propósito: `.\iniciar.bat -SemTreinado`;
+- sobe a central e abre o navegador em **http://127.0.0.1:8001**.
+
+A primeira execução leva alguns minutos por causa dos downloads; nas próximas, abre direto. Para parar tudo, feche a janela ou use Ctrl+C. A primeira pergunta demora uns 20 segundos, porque os modelos são carregados na memória; as seguintes levam de 1 a 3 segundos com GPU.
 
 ### Usando a central
 
 - **Lateral:** os pontos monitorados. A régua mostra o nível de água, e a linha vermelha marca o alerta de 10 cm. Clique num ponto para ver perguntas prontas sobre ele (última leitura, obstrução, última manutenção, rascunho de OS).
-- **Centro:** escreva a pergunta e clique em **Perguntar**. Cada resposta mostra "De onde veio" (as fontes), "O que verificar" e, quando for o caso, o rascunho da ordem de serviço. Em "Ver o que a IA consultou" aparecem os trechos e registros usados.
+- **Centro:** escreva a pergunta e clique em **Perguntar**. Não é preciso escolher modelo: a IA decide sozinha (veja abaixo). Cada resposta mostra o caminho percorrido, um selo com o modelo que respondeu, "De onde veio" (as fontes), "O que verificar" e, quando for o caso, o rascunho da ordem de serviço. Em "Ver o que a IA consultou" aparecem os trechos e registros usados.
 - **Aba Avaliação:** o placar das configurações nas 40 perguntas do gabarito.
 
 ### Como a IA responde
 
-É sempre o mesmo modelo de linguagem rodando no seu computador. O que muda é o que ele recebe antes de responder:
+Quem usa a central não escolhe modelo. A cada pergunta, a IA percorre os caminhos abaixo, nesta ordem, e para no primeiro que der uma resposta com fontes conferidas pelo código. A tela mostra o percurso enquanto ele acontece:
 
-| Opção | O que a IA recebe | Quando usar |
-|---|---|---|
-| **Agente** (padrão) | A pergunta, os trechos de manual mais parecidos com ela e acesso de leitura aos registros dos pontos (sensores, inspeções, ocorrências e manutenções) | Uso normal: responde tanto "como limpar uma caixa de captação" quanto "qual a leitura do RALO-01" |
-| **Agente treinado** | O mesmo que o Agente, mas a resposta final é escrita pelo modelo que a equipe treinou (Qwen2.5-3B + adaptador LoRA) | Comparar o modelo treinado com o base (na avaliação: 50% de acerto contra 57,5% do Agente; seção 9). Fica desabilitado até o servidor do modelo treinado ser ligado e precisa de GPU NVIDIA (veja [`treino/README.md`](treino/README.md)). Leva de 15 a 40 s por resposta |
-| **Só documentos** (RAG) | A pergunta e os 3 trechos de manual mais parecidos | Comparação: responde procedimentos, mas recusa perguntas sobre um ponto, porque não vê os registros |
-| **Sem contexto** | Só a pergunta | Comparação: responde "de cabeça", sem fonte; é onde mais inventa |
+1. **Agente**: o Qwen2.5-3B recebe os trechos de manual mais parecidos com a pergunta e consulta, só para leitura, os registros dos pontos (sensores, inspeções, ocorrências e manutenções).
+2. **Só documentos**: o mesmo modelo, apenas com os trechos de manual.
+3. **Agente treinado**: o mesmo percurso do Agente, mas a resposta é escrita pelo Qwen2.5-3B que a equipe treinou (LoRA). Só entra se o modelo treinado estiver ligado.
+
+Se nenhum caminho encontrar evidência, a resposta é "Não consta nos dados disponíveis.". A IA **nunca** responde sem consultar nada: o modo sem contexto é o que mais inventa, e serve apenas para comparação.
+
+Para a banca, o link **Comparar modos (técnico)**, abaixo do botão, permite fixar um modo:
+
+| Modo | O que a IA recebe | Resultado nas 40 perguntas |
+|---|---|---:|
+| Automático (padrão) | Percorre Agente, Só documentos e Agente treinado | 57,5%* |
+| Agente | Pergunta, trechos de manual e registros dos pontos | 57,5% |
+| Agente treinado | O mesmo, com a resposta escrita pelo modelo treinado (precisa de GPU NVIDIA; 15 a 40 s por resposta) | 50,0% |
+| Só documentos (RAG) | Pergunta e 3 trechos de manual | 40,0% |
+| Sem contexto | Só a pergunta | 17,5% |
+
+\* Reprodução com as respostas já salvas de cada modo (seção 9). O percurso automático dá o mesmo acerto do Agente porque, nas perguntas em que o Agente recusa, os outros caminhos também não acham evidência. O ganho é de robustez e transparência, não de acerto: se um modelo falhar ou estiver desligado, o próximo assume, e a pessoa vê de onde veio a resposta.
 
 Perguntas para testar:
 
@@ -304,6 +319,21 @@ Sete perguntas mudaram de resultado:
 
 **O que isso mostra.** O treino mudou o comportamento do modelo na direção ensinada: mais precisão no formato das leituras, menos contradição e menos afirmações sem suporte. Mas com 98 exemplos gerados por regra ele também aprendeu a encurtar respostas e a repetir trechos, e no saldo acertou menos. Por isso o Agente com o modelo base continua como padrão da central, e o Agente treinado fica disponível para comparação. Para melhorar o treino: respostas-alvo que combinem vários trechos em vez de copiar um, mais exemplos de listas completas, uma época a menos e um validador que aceite diferenças calculadas a partir de valores citados.
 
+### Escolha automática entre os modos
+
+Testamos se combinar os modos melhora o acerto, usando as respostas já salvas de cada um nas 40 perguntas. Na hora do uso não existe gabarito, então a escolha só pode usar sinais que o código confere: se o modo recusou, se citou fontes que foram de fato consultadas e se o validador barrou alguma afirmação.
+
+| Regra de escolha | Corretas | Respostas com afirmação sem suporte |
+|---|---:|---:|
+| Só o Agente | 23/40 | 5 |
+| Agente, depois Só documentos, depois Agente treinado (o que a central faz) | 23/40 | 5 |
+| Começar pelo Agente treinado | 21/40 | 5 |
+| Incluir o Sem contexto como último recurso | 23/40 | 9 |
+| Rodar Agente e treinado e ficar com a resposta de mais fontes | 23/40 | 5 |
+| Máximo possível escolhendo com o gabarito (não existe na hora do uso) | 26/40 | - |
+
+A cascata não aumenta o acerto: quando o Agente recusa, os outros caminhos com evidência também recusam. Incluir o Sem contexto não acerta nenhuma pergunta a mais e quase dobra as respostas sem suporte, porque ele "responde" justamente quando não há evidência. Por isso a central percorre só os caminhos com evidência, nunca o Sem contexto.
+
 ### Primeiro treino: agente conectado (Qwen2.5-1.5B)
 
 Antes, treinamos o `Qwen2.5-1.5B-Instruct` para a tarefa do console `/v2/console`: receber uma evidência da DrenaData ou da DrenaVision e responder em JSON com recusa, citação, origem do dado e pedido de revisão humana. Foram 84 exemplos de treino e 18 de validação, 42 passos e 97 s; a perda de validação foi de 0,639 para 0,436. Tudo está em [`treino/dados/`](treino/dados/), [`treino/adapter/`](treino/adapter/), [`notebooks/treino_lora.ipynb`](notebooks/treino_lora.ipynb) e [`avaliacao/lora/`](avaliacao/lora/).
@@ -356,7 +386,7 @@ $env:DRENA_V2_DATA_EXPORT_DIR = 'C:\caminho\drenahub-bigdata\mvp\dados'
 $env:DRENA_V2_VISION_URL = 'http://127.0.0.1:8000'
 ```
 
-Modelo treinado (opcional, GPU NVIDIA): suba o servidor em outro terminal com `python -m treino.servidor_treinado`, seguindo [`treino/README.md`](treino/README.md). A central detecta o servidor em `http://127.0.0.1:8766` e libera a opção "Agente treinado".
+Modelo treinado (GPU NVIDIA): o `iniciar.bat` cria o ambiente `.venv-treinado` e liga o servidor sozinho. À mão, siga [`treino/README.md`](treino/README.md) e rode `python -m treino.servidor_treinado`. A central confere a cada 30 s se o servidor em `http://127.0.0.1:8766` está pronto e passa a usá-lo.
 
 Avaliação, testes e notebooks:
 
@@ -388,5 +418,4 @@ Treinamos os pesos do mesmo modelo para a tarefa da central. O treino funcionou 
 
 Próximos passos: corrigir os 5 erros e o falso positivo do validador em diferenças calculadas, refazer o treino com respostas que combinem vários trechos e mais exemplos de listas completas, incluir normas brasileiras (ABNT e prefeitura) na base, fazer o DrenaBot enviar as leituras direto para a DrenaData e ligar a câmera do carrinho à DrenaVision.
 
-- Repositório: https://github.com/Torugo0/drenahub-genai
-- Vídeo: (inserir link do vídeo aqui)
+Repositório: https://github.com/Torugo0/drenahub-genai
