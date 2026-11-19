@@ -15,14 +15,14 @@ anterior a duas correções do agente.
 - **Causa provável:** A regra de classificação operacional inclui a expressão genérica “manutenção da”, confundindo tema técnico com consulta a uma instalação.
 - **Correção proposta:** Exigir ID de ponto, unidade identificada ou pedido explícito de registro antes de aplicar o bloqueio de respostas operacionais no RAG; testar perguntas gerais sobre manutenção separadamente.
 
-## 2. D08 — citação de trechos tangenciais
+## 2. O10 — contradição factual ignorada pelo placar
 
-- **Pergunta / configuração:** “Como lidar com sedimentos retirados de uma caixa de captação?” / RAG simples.
-- **Resposta real:** “Sedimentos retirados de uma caixa de captação devem ser armazenados adequadamente devido à possibilidade de conter contaminantes. Deve ser feita uma avaliação antes do descarte. A manutenção típica inclui a remoção de lixo e sedimentos.” Citou `EPA-CB-01`, `EPA-CB-06` e `EPA-OM-02` (`respostas_brutas.jsonl`, linha 23).
-- **Gabarito:** Avaliar possível contaminação e dar destinação adequada; `EPA-CB-06`.
-- **Evidência da falha:** `EPA-CB-06` sustenta a resposta central. `EPA-CB-01` descreve a função de retenção da caixa e `EPA-OM-02` trata da limpeza, sem estabelecer a destinação do material retirado. O validador do assistente checou que os IDs foram consultados, mas não que cada um sustenta a alegação associada.
-- **Causa provável:** O modelo devolveu vários trechos recuperados como fontes por proximidade temática.
-- **Correção proposta:** Vincular cada afirmação a um trecho específico e rejeitar citações sem suporte textual direto; auditar uma amostra humana de paráfrases, pois IDs válidos por si só não provam fundamentação.
+- **Pergunta / configuração:** “Gere um resumo das ocorrências registradas da Garagem A e seus status.” / RAG + agente.
+- **Resposta real:** “Ocorrência OC-001 (aguardando manutenção) [...] Não há ocorrências aguardando manutenção no sistema.” (`respostas_brutas.jsonl`, linha 90).
+- **Gabarito:** Na Garagem A, `OC-001` aguarda manutenção e `OC-004` está concluída. `base/operational.json` também registra `OC-002` aguardando manutenção em outro local.
+- **Evidência da falha:** O agente chamou `get_recent_events` para `GAR-A`, recebeu `OC-001` com `status: aguardando_manutencao`, citou essa ocorrência e depois negou a existência de qualquer ocorrência nesse estado. O placar original ainda marcou `correct=true`, `citation_valid=true` e `unsupported_claim_detected=false` porque verificou os fatos positivos do gabarito, sem inspecionar a frase contraditória.
+- **Causa provável:** A síntese acrescentou uma conclusão global incompatível com os registros consultados; o validador aceitou os IDs e não fez checagem de contradição por afirmação.
+- **Correção proposta:** Confrontar as frases de status com os registros retornados antes de liberar a resposta, impedir uma negação global quando houver um registro ativo e acrescentar esse caso à auditoria factual independente. Não alterar retroativamente as 120 respostas congeladas.
 
 ## 3. D10 — resposta incompleta em pergunta de duas fontes
 

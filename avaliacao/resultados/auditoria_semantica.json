@@ -1,0 +1,122 @@
+{
+  "scope": "Frozen 40 cases x 3 configurations; quantitative rule audit plus narrow deterministic contradiction check",
+  "input_sha256": {
+    "avaliacao/casos.json": "60519c5c303cd7069e73cccebaa89c21fbb6a59fed924aa79cea5eaa5b9e7ddc",
+    "avaliacao/resultados/respostas_brutas.jsonl": "6f05c9ee214536955da05c7267fbd28f7d13899eaf892068bbe8105200fadde5",
+    "avaliacao/resultados/pontuacao_individual.json": "4072db3d9f88524353c1b9e820e57f693f13c52f495373a2febdb15ae024616c",
+    "base/operational.json": "7507427e2b96ce9532536c2a606b10afc3c20651ddc4c5210c22d966052c2ac3"
+  },
+  "summary": {
+    "baseline": {
+      "total_cases": 40,
+      "answerable_cases": 34,
+      "expected_refusal_cases": 6,
+      "correct_refusals": 6,
+      "excess_refusals_on_answerable_cases": 15,
+      "substantive_answers": 19,
+      "substantive_answers_without_citation": 19,
+      "official_correct": 7,
+      "official_correct_on_answerable_cases": 1,
+      "official_valid_citation": 21,
+      "official_valid_citation_on_substantive_answers": 0,
+      "official_unsupported_claim_detected": 19,
+      "unsupported_flag_from_uncited_substantive_answer": 19,
+      "unsupported_flag_with_id_outside_case_whitelist": 0,
+      "forbidden_claim_matches": 0,
+      "by_split": {
+        "dev": {
+          "cases": 20,
+          "official_correct": 3,
+          "answerable_cases": 17,
+          "official_correct_on_answerable_cases": 0
+        },
+        "final": {
+          "cases": 20,
+          "official_correct": 4,
+          "answerable_cases": 17,
+          "official_correct_on_answerable_cases": 1
+        }
+      }
+    },
+    "rag": {
+      "total_cases": 40,
+      "answerable_cases": 34,
+      "expected_refusal_cases": 6,
+      "correct_refusals": 6,
+      "excess_refusals_on_answerable_cases": 18,
+      "substantive_answers": 16,
+      "substantive_answers_without_citation": 0,
+      "official_correct": 16,
+      "official_correct_on_answerable_cases": 10,
+      "official_valid_citation": 35,
+      "official_valid_citation_on_substantive_answers": 11,
+      "official_unsupported_claim_detected": 5,
+      "unsupported_flag_from_uncited_substantive_answer": 0,
+      "unsupported_flag_with_id_outside_case_whitelist": 5,
+      "forbidden_claim_matches": 0,
+      "by_split": {
+        "dev": {
+          "cases": 20,
+          "official_correct": 9,
+          "answerable_cases": 17,
+          "official_correct_on_answerable_cases": 6
+        },
+        "final": {
+          "cases": 20,
+          "official_correct": 7,
+          "answerable_cases": 17,
+          "official_correct_on_answerable_cases": 4
+        }
+      }
+    },
+    "agent": {
+      "total_cases": 40,
+      "answerable_cases": 34,
+      "expected_refusal_cases": 6,
+      "correct_refusals": 6,
+      "excess_refusals_on_answerable_cases": 4,
+      "substantive_answers": 30,
+      "substantive_answers_without_citation": 0,
+      "official_correct": 23,
+      "official_correct_on_answerable_cases": 17,
+      "official_valid_citation": 35,
+      "official_valid_citation_on_substantive_answers": 25,
+      "official_unsupported_claim_detected": 5,
+      "unsupported_flag_from_uncited_substantive_answer": 0,
+      "unsupported_flag_with_id_outside_case_whitelist": 5,
+      "forbidden_claim_matches": 0,
+      "by_split": {
+        "dev": {
+          "cases": 20,
+          "official_correct": 13,
+          "answerable_cases": 17,
+          "official_correct_on_answerable_cases": 10
+        },
+        "final": {
+          "cases": 20,
+          "official_correct": 10,
+          "answerable_cases": 17,
+          "official_correct_on_answerable_cases": 7
+        }
+      }
+    }
+  },
+  "deterministic_contradictions": [
+    {
+      "case_id": "O10",
+      "configuration": "agent",
+      "claim": "nao ha ocorrencias aguardando manutencao",
+      "contradicting_record_ids": [
+        "OC-001",
+        "OC-002"
+      ],
+      "official_correct": true,
+      "official_unsupported_claim_detected": false,
+      "response_source_ids": [
+        "OC-001",
+        "OC-004"
+      ]
+    }
+  ],
+  "limitation": "Missing/invalid citations, omissions and excessive refusals are separate from semantic hallucinations; unflagged free-form claims are not proven true."
+}

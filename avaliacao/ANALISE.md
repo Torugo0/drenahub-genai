@@ -18,11 +18,12 @@ consultou os registros operacionais sintéticos por funções reais.
 | Latência média | 1.183 ms | 1.354 ms | 1.688 ms |
 
 O **RAG ganhou 22,5 pontos percentuais** de correção sobre o baseline. Nos
-20 casos documentais, passou de 5% (1/20) para 50% (10/20). Também reduziu
-a detecção de afirmações sem suporte em 35 pontos. O baseline recusou os
-**seis casos que exigiam recusa** (cinco casos N e `O13`), mas muitas
-respostas documentais livres foram
-incompletas ou sem fonte externa.
+20 casos documentais, passou de 5% (1/20) para 50% (10/20). O indicador
+automático de “afirmações sem suporte” caiu 35 pontos, mas **não mede uma
+redução comprovada de alucinações**: o baseline foi instruído a não citar
+fontes, e todas as suas 19 respostas substantivas foram sinalizadas por essa
+ausência. O baseline recusou os **seis casos que exigiam recusa** (cinco casos
+N e `O13`), mas também recusou indevidamente 15 perguntas respondíveis.
 
 O **agente ganhou 17,5 pontos** sobre o RAG. O ganho concentra-se nos 15 casos
 operacionais: 8/15 corretos (53,3%) contra 1/15 (6,7%) no RAG e baseline.
@@ -33,6 +34,11 @@ obrigatórias, e um plano da LLM foi complementado por consultas obrigatórias.
 Os rastros registram argumentos, horário e IDs retornados. O agente não
 treinou pesos: a especialização vem do RAG, do planejamento e das funções
 somente leitura.
+
+Nos 20 casos **finais**, os acertos foram 4/20 no baseline, 7/20 no RAG e
+10/20 no agente. Entre as 34 perguntas respondíveis da avaliação completa,
+as recusas indevidas foram 15, 18 e 4, respectivamente. Assim, o ganho
+relativo convive com cobertura limitada no teste final.
 
 Houve pioras pontuais. Em `D06`, o RAG respondeu que a frequência anual pode
 ser ajustada pelo acúmulo observado, mas o agente omitiu essa condição. O
@@ -58,16 +64,21 @@ no top 3. A escolha do limiar não foi recalibrada usando os casos finais.
 ## Limites do placar
 
 “Correta” exige fatos definidos no gabarito, não uma avaliação subjetiva da
-própria LLM. A taxa de afirmações sem suporte é um **limite inferior**: padrões
-e IDs identificam erros conhecidos, mas não conseguem provar cada frase
-livre. Uma resposta correta para o usuário pode perder pontos se omitir um
-fato obrigatório; uma resposta com palavras esperadas pode exigir revisão
-humana. As fontes citadas são checadas contra IDs consultados e fontes do
-gabarito, mas a correspondência semântica de cada paráfrase ainda precisa de
-auditoria manual. A base operacional é sintética e pequena; não demonstra
-integração com sensores ou visão computacional reais nem previsão de
-alagamentos. O DrenaAssist auxilia a manutenção; decisões e inspeções
-permanecem humanas.
+própria LLM. O indicador de “afirmações sem suporte” mistura falta de citação
+com desacordo da lista de fontes esperadas; seus percentuais **não são uma
+taxa de alucinação**. O verificador pode reprovar uma citação que sustenta
+uma frase adicional e aprovar uma resposta que contém contradição. Em
+`O10/agente`, por exemplo, a resposta cita `OC-001` aguardando manutenção e
+depois afirma que não existe ocorrência nesse estado; o placar marcou o caso
+como correto. Uma resposta também pode perder pontos por omitir um fato
+obrigatório. A auditoria reproduzível e os exemplos estão em
+`AUDITORIA_SEMANTICA.md`; as revisões `AUDITORIA_DOCUMENTAL_DETALHADA.md` e
+`AUDITORIA_OPERACIONAL_DETALHADA.md` classificam as 65 respostas substantivas
+contra a referência, mas não verificam a verdade externa nem contam cada
+frase para calcular uma taxa geral de alucinação. A base operacional
+é sintética e pequena; não demonstra integração com sensores ou visão
+computacional reais nem previsão de alagamentos. O DrenaAssist auxilia a
+manutenção; decisões e inspeções permanecem humanas.
 
 Cinco falhas específicas, com resposta real, gabarito, causa provável e
 correção proposta, estão em `erros.md`.

@@ -76,10 +76,10 @@
   },
   "test_execution": {
     "command": "python -m pytest -q",
-    "passed": 21,
+    "passed": 22,
     "failed": 0,
-    "duration_s": 12.96,
-    "evidence_path": "avaliacao/resultados/testes_finais.txt",
+    "duration_s": 12.90,
+    "evidence_path": "avaliacao/resultados/testes_interface_e_auditoria.txt",
     "pip_check": "No broken requirements found."
   },
   "commands_used": [

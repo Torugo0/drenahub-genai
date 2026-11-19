@@ -47,8 +47,12 @@ Métricas por configuração:
   obrigatórios. Pré-chamado exige objeto `draft_work_order`.
 - **Afirmação sem suporte detectada:** resposta não recusada quando deveria,
   expressão factual explicitamente proibida, ID citado fora das fontes do
-  caso, ou resposta marcada como sustentada sem citação válida. É um limite
-  inferior de detecção determinística; alegações livres exigem revisão humana.
+  caso, ou resposta marcada como sustentada sem citação válida. Esse indicador
+  mistura ausência de citação, desacordo com a lista de fontes do caso e erro
+  factual. Pode sinalizar uma afirmação verdadeira sem fonte esperada e pode
+  deixar passar uma contradição com fonte citada. **Não é taxa de alucinação**;
+  alegações livres exigem revisão factual por afirmação. Veja
+  `AUDITORIA_SEMANTICA.md`.
 - **Recusa correta:** entre os casos que pedem recusa, proporção que devolve
   `refused=true` e a frase `Não consta nos dados disponíveis.`.
 - **JSON válido:** proporção de objetos de resposta serializáveis em JSON.

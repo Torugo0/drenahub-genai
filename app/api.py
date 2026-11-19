@@ -7,7 +7,8 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from .assistant import ask
 from .models import AskRequest, AskResponse, Configuration
@@ -16,9 +17,17 @@ from .ollama_client import OllamaClient
 
 ROOT = Path(__file__).resolve().parents[1]
 SCOREBOARD_PATH = ROOT / "avaliacao" / "resultados" / "placar.json"
+AUDIT_PATH = ROOT / "avaliacao" / "resultados" / "auditoria_semantica.json"
+STATIC_PATH = ROOT / "app" / "static"
 app = FastAPI(title="DrenaAssist", version="0.1.0", description="Assistente local para operacoes e manutencao de drenagem")
 origins = [item.strip() for item in os.getenv("DRENA_CORS_ORIGINS", "http://localhost:5173,http://localhost:3000").split(",") if item.strip()]
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=False, allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
+app.mount("/static", StaticFiles(directory=STATIC_PATH), name="static")
+
+
+@app.get("/", include_in_schema=False)
+def home() -> FileResponse:
+    return FileResponse(STATIC_PATH / "index.html")
 
 
 @app.get("/health")
@@ -52,3 +61,10 @@ def evaluation_results() -> dict[str, object]:
     if not SCOREBOARD_PATH.exists():
         raise HTTPException(status_code=404, detail="Avaliação ainda não executada")
     return json.loads(SCOREBOARD_PATH.read_text(encoding="utf-8"))
+
+
+@app.get("/evaluation/audit")
+def evaluation_audit() -> dict[str, object]:
+    if not AUDIT_PATH.exists():
+        raise HTTPException(status_code=404, detail="Auditoria ainda não executada")
+    return json.loads(AUDIT_PATH.read_text(encoding="utf-8"))

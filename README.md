@@ -31,6 +31,7 @@ O computador utilizado para esta execução tem Windows 11 Home build 26300, AMD
 | Caminho | Conteúdo |
 |---|---|
 | `app/` | Cliente Ollama, busca, orquestração, ferramentas, contratos Pydantic e API |
+| `app/static/` | Interface local responsiva para consultar os três modos e visualizar as evidências |
 | `base/` | Trechos documentais, fontes e dados operacionais sintéticos |
 | `avaliacao/` | Gabaritos, metodologia, runner, respostas brutas, métricas, placar e erros |
 | `notebooks/` | Experimento executado com saídas salvas |
@@ -74,6 +75,10 @@ python -c "from app.retrieval import Retriever; r=Retriever(); print(len(r.chunk
 ```powershell
 python -m uvicorn app.api:app --host 127.0.0.1 --port 8001
 ```
+
+Abra **http://127.0.0.1:8001/** no navegador para usar a interface local. Escolha **Sem contexto**, **Com documentos** ou **Agente**, selecione um exemplo ou escreva uma pergunta e clique em **Consultar DrenaAssist**. O modo Agente permite delimitar local e ponto; as fontes citadas, registros sintéticos, consultas de ferramentas e eventual pré-chamado aparecem no resultado. A seção **Avaliação** lê o placar congelado e a auditoria pelo mesmo servidor. A documentação interativa da API permanece em **http://127.0.0.1:8001/docs**. A página integra esta API local; a Central DrenaHub separada ainda não está conectada.
+
+![Interface local do DrenaAssist](docs/interface-drenaassist.png)
 
 Em outro terminal:
 
@@ -134,9 +139,9 @@ As 28 linhas em `avaliacao/resultados/diagnostico_antes_correcoes.jsonl` pertenc
 | RAG | 40,0% | 12,5% | 100% | 100% / 100% | 87,5% | — | 1.354 ms |
 | RAG + agente | 57,5% | 12,5% | 100% | 100% / 100% | 87,5% | 90,0% | 1.688 ms |
 
-O RAG elevou acertos em **22,5 pontos percentuais** sobre o baseline; entre 20 perguntas documentais, passou de 1 para 10 acertos. O agente acrescentou **17,5 pontos percentuais** sobre o RAG, sobretudo nas perguntas operacionais: 8/15 acertos contra 1/15 no RAG. Nas duas perguntas de múltiplas fontes, nenhuma configuração acertou. O agente também errou as duas perguntas categorizadas como sensor e as três que combinam ocorrência, sensor e inspeção. Em relação ao RAG, empatou em afirmações sem suporte detectadas e citações válidas, mas teve maior latência média. O ganho de acertos não elimina as lacunas por categoria. Veja o julgamento por caso em `avaliacao/resultados/pontuacao_individual.json` e a interpretação detalhada em [ANALISE.md](avaliacao/ANALISE.md).
+O RAG elevou acertos em **22,5 pontos percentuais** sobre o baseline; entre 20 perguntas documentais, passou de 1 para 10 acertos. O agente acrescentou **17,5 pontos percentuais** sobre o RAG, sobretudo nas perguntas operacionais: 8/15 acertos contra 1/15 no RAG. Nas duas perguntas de múltiplas fontes, nenhuma configuração acertou. O agente também errou as duas perguntas categorizadas como sensor e as três que combinam ocorrência, sensor e inspeção. Em relação ao RAG, empatou no indicador automático de afirmações sem suporte e em citações aprovadas pelo gabarito, mas teve maior latência média. No subconjunto final, o agente acertou **10/20**. O ganho de acertos não elimina as lacunas por categoria. Veja o julgamento por caso em `avaliacao/resultados/pontuacao_individual.json` e a interpretação detalhada em [ANALISE.md](avaliacao/ANALISE.md).
 
-`--fresh` inicia nova execução e substitui resultados prévios; sem a opção, o runner pode reutilizar linhas já gravadas para retomar uma execução interrompida. O comando pode demorar porque cada caso passa pelo modelo local. As definições e limites das métricas ficam em `avaliacao/METODOLOGIA.md`. O placar **não usa a própria LLM como juiz**. Padrões de fatos obrigatórios, recusas, fontes permitidas e ferramentas esperadas foram definidos nos gabaritos. A detecção automática de afirmações não sustentadas é uma medida limitada; casos ambíguos exigem revisão humana.
+`--fresh` inicia nova execução e substitui resultados prévios; sem a opção, o runner pode reutilizar linhas já gravadas para retomar uma execução interrompida. O comando pode demorar porque cada caso passa pelo modelo local. As definições e limites das métricas ficam em `avaliacao/METODOLOGIA.md`. O placar **não usa a própria LLM como juiz**. Padrões de fatos obrigatórios, recusas, fontes permitidas e ferramentas esperadas foram definidos nos gabaritos. A coluna “afirmações sem suporte detectadas” **não é taxa de alucinação**: o baseline foi instruído a não citar, e todas as suas 19 respostas substantivas acionaram o indicador por ausência de fonte. O placar também deixou passar uma contradição em `O10/agente`. A [auditoria independente](avaliacao/AUDITORIA_SEMANTICA.md) explica esses limites; as revisões [documental](avaliacao/AUDITORIA_DOCUMENTAL_DETALHADA.md) e [operacional](avaliacao/AUDITORIA_OPERACIONAL_DETALHADA.md) classificam as 65 respostas substantivas contra a referência, separando suporte factual, omissões e recusas. Elas não verificam a verdade externa dos documentos nem contam cada frase como unidade estatística.
 
 Consulte `avaliacao/erros.md` para cinco falhas reais, com vínculos às respostas brutas e correções propostas.
 
@@ -148,7 +153,7 @@ python -m pytest -q
 
 Os testes verificam contratos, carregamento da base, índice, recuperação, recall, citações, recusas, ferramentas autorizadas, API, falha do Ollama e reprodutibilidade da avaliação. O número efetivamente aprovado deve ser conferido na saída do comando e em `docs/AMBIENTE.json`. Testes com cliente ou dados substitutos não equivalem às inferências reais salvas pelo runner.
 
-Na auditoria local, a suíte final registrou **21 testes aprovados em 12,96 s**, incluindo a verificação da correção de citações do pré-chamado; a saída está em `avaliacao/resultados/testes_finais.txt`. `requirements.txt` fixa Pytest 8.4.2 porque a versão 9.2 falhou neste caminho OneDrive com caracteres acentuados.
+Após acrescentar a interface e a auditoria, a suíte completa registrou **22 testes aprovados em 12,90 s**; a saída está em `avaliacao/resultados/testes_interface_e_auditoria.txt`. A execução anterior de 21 testes foi preservada em `testes_finais.txt`. `requirements.txt` fixa Pytest 8.4.2 porque a versão 9.2 falhou neste caminho OneDrive com caracteres acentuados.
 
 `notebooks/experimentos.ipynb` contém as células e saídas salvas: modelo, base, busca, recall, resposta JSON, recusa, chamadas do agente, comparação, gráficos e cinco erros. Para recriá-lo e executá-lo após a avaliação, use:
 
