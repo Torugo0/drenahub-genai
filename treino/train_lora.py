@@ -2,7 +2,7 @@
 
 Uso no ambiente CUDA isolado do WSL2::
 
-    python -m lora.train_lora --train train.jsonl --dev dev.jsonl \
+    python -m treino.train_lora --train train.jsonl --dev dev.jsonl \
         --output /home/vitor/drenaassist-v2-train/adapter
 
 O script recusa exemplos marcados como teste/final e salva apenas o adapter,

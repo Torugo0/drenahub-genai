@@ -13,7 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from .assistant import ask
 from .models import AskRequest, AskResponse, Configuration
 from .ollama_client import OllamaClient
-from lora.api import router as v2_router
+from .api_v2 import router as v2_router
 
 
 ROOT = Path(__file__).resolve().parents[1]

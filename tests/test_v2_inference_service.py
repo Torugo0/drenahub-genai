@@ -10,10 +10,10 @@ import httpx
 import pytest
 from pydantic import ValidationError
 
-from lora.inference_client import InferenceClient, InferenceClientError
-from lora.inference_contracts import GenerateRequest, GenerateResponse, HealthResponse, MAX_BODY_BYTES
-from lora.inference_service import GenerationTimeout, InferenceEngine, ModelUnavailable, make_handler
-from lora.train_lora import MODEL_ID, MODEL_REVISION
+from app.inference_client import InferenceClient, InferenceClientError
+from treino.inference_contracts import GenerateRequest, GenerateResponse, HealthResponse, MAX_BODY_BYTES
+from treino.inference_service import GenerationTimeout, InferenceEngine, ModelUnavailable, make_handler
+from treino.train_lora import MODEL_ID, MODEL_REVISION
 
 
 MESSAGES = [{"role": "system", "content": "Responda em JSON."}, {"role": "user", "content": "Pergunta técnica geral."}]

@@ -2,7 +2,7 @@
 
 Executar no WSL, no ambiente CUDA isolado::
 
-    /home/vitor/drenaassist-v2-train/.venv/bin/python -m lora.inference_service
+    /home/vitor/drenaassist-v2-train/.venv/bin/python -m treino.inference_service
 
 O servidor usa apenas 127.0.0.1. GET /health não carrega a GPU; a primeira
 POST /generate carrega o modelo. Não consulta fontes, não executa ferramentas
@@ -36,8 +36,8 @@ from .train_lora import MODEL_ID, MODEL_REVISION
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MODEL_PATH = Path("/home/vitor/drenaassist-v2-train/model")
-DEFAULT_ADAPTER_PATH = ROOT / "lora" / "adapter"
-DEFAULT_MANIFEST_PATH = ROOT / "lora" / "training_manifest.json"
+DEFAULT_ADAPTER_PATH = ROOT / "treino" / "adapter"
+DEFAULT_MANIFEST_PATH = ROOT / "treino" / "training_manifest.json"
 
 
 class ModelUnavailable(RuntimeError):

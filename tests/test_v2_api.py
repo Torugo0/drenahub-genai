@@ -8,10 +8,10 @@ import json
 from fastapi.testclient import TestClient
 
 from app.api import app
-from lora import api as v2_api
-from lora.contracts import Evidence
-from lora.response_agent import AnswerResult
-from lora.train_lora import MODEL_ID, MODEL_REVISION
+from app import api_v2 as v2_api
+from app.contracts import Evidence
+from app.response_agent import AnswerResult
+from treino.train_lora import MODEL_ID, MODEL_REVISION
 
 
 def test_v2_source_status_and_unconfigured_data(monkeypatch, tmp_path):

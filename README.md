@@ -4,6 +4,8 @@
 
 O DrenaAssist é o assistente que responde, em linguagem simples, **"o que eu faço com esse ralo?"**. Ele roda 100% local, consulta procedimentos técnicos de drenagem e os registros de sensores, inspeções e ocorrências da DrenaHub, cita de onde tirou cada informação e **recusa** quando não tem evidência ("Não consta nos dados disponíveis."). Nenhuma decisão é automática: ordens de serviço saem como rascunho para uma pessoa aprovar.
 
+> **Treinamos a LLM localmente.** Ajustamos os pesos do `Qwen2.5-1.5B-Instruct` com QLoRA na nossa GPU (RTX 4060): 84 exemplos, 2 épocas, perda de validação 0,436. O resultado é um adaptador de 8,7 MB versionado em [`treino/adapter/`](treino/adapter/). Com ele, o JSON válido passou de 0/24 para 24/24 no teste congelado. As provas estão na [seção 8](#8-especialização-treino-lora-da-llm-local-e-agente).
+
 | Link | |
 |---|---|
 | Repositório | https://github.com/Torugo0/drenahub-genai |
@@ -171,16 +173,42 @@ Mesma LLM (`qwen2.5:3b-instruct`, temperatura 0, seed 42), mesmas 40 perguntas, 
 - **Ninguém acertou as 2 perguntas de múltiplas fontes.** É o próximo limite do sistema.
 - O indicador automático "afirmação sem suporte" (47,5% / 12,5% / 12,5%) penaliza o baseline por não citar fonte; por isso a taxa de alucinação acima vem da revisão humana.
 
-## 8. Especialização: agente vs. RAG simples, e o treino LoRA
+## 8. Especialização: treino LoRA da LLM local e agente
 
 A rubrica aceita **LoRA ou agente**. Fizemos os dois:
 
-- **Agente (configuração C)** é a especialização usada no produto e comparada ao RAG simples no placar acima.
-- **LoRA (treino real de pesos)**: ajustamos `Qwen/Qwen2.5-1.5B-Instruct` (Apache-2.0, revisão fixa) por **QLoRA NF4** (r=8, alpha=16, q/k/v/o) em uma RTX 4060 de 8 GB: 84 exemplos de treino e 18 de validação, 2 épocas, 42 passos, 97 s, perda de validação **0,436**. O adaptador de 8,7 MB está em [`lora/adapter/`](lora/adapter/). Tudo em [`lora/README.md`](lora/README.md).
+- **Agente (configuração C)**: especialização por ferramentas, comparada ao RAG simples no placar acima.
+- **Treino LoRA**: **treinamos os pesos de uma LLM localmente**, como descrito abaixo.
 
-Resultado do LoRA no conjunto final congelado (24 casos, mesmo checkpoint com e sem adaptador):
+### Como treinamos a LLM local (evidências)
 
-| Métrica | Base 1.5B | Base + LoRA |
+Treinamos `Qwen/Qwen2.5-1.5B-Instruct` (Apache-2.0, revisão `989aa79…`) com **QLoRA** (modelo quantizado em 4 bits NF4 + adaptadores LoRA r=8, alpha=16 nas projeções q/k/v/o) **na nossa própria GPU, uma RTX 4060 de 8 GB**, sem nenhum serviço de nuvem. O treino durou **97 s**: 2 épocas e 42 passos de otimização.
+
+| Passo | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Perda de treino | 1,178 | 1,089 | 0,822 | 0,590 | 0,487 | 0,392 | 0,294 | 0,275 |
+
+A perda de validação foi 0,639 ao fim da época 1 e **0,436** ao fim da época 2. O PEFT cria as matrizes `lora_B` zeradas, e no adaptador salvo **as 112 matrizes `lora_B` estão diferentes de zero**. Ou seja, os pesos foram de fato alterados pelo treino.
+
+| Prova | Onde está |
+|---|---|
+| 1. Dados de treino, **congelados antes** do treino (84 treino / 18 validação / 24 teste) | [`treino/dados/`](treino/dados/), com hashes em [`manifest.json`](treino/dados/manifest.json) e congelamento no commit `afd15fb` |
+| 2. Script de treino | [`treino/train_lora.py`](treino/train_lora.py) (Transformers + PEFT + bitsandbytes) |
+| 3. Histórico da perda passo a passo, salvo pelo Trainer | [`treino/historico_treino.json`](treino/historico_treino.json) |
+| 4. Resumo da execução: versões, GPU, duração | [`treino/training_manifest.json`](treino/training_manifest.json) |
+| 5. **Pesos treinados** (adaptador de 8,7 MB, SHA-256 `fed4b6ce…`) | [`treino/adapter/`](treino/adapter/) |
+| 6. Notebook com gráfico da perda, checagem dos pesos e resultados | [`notebooks/treino_lora.ipynb`](notebooks/treino_lora.ipynb) |
+| 7. Modelo treinado servido localmente | [`treino/inference_service.py`](treino/inference_service.py), usado pela rota `POST /v2/assistant/ask` |
+
+### Onde está o teste do modelo treinado
+
+- **Perguntas do teste**: [`treino/dados/final.jsonl`](treino/dados/final.jsonl), com 24 casos que **nunca entraram no treino**, mais 6 perguntas adversariais em [`adversarial_probes.py`](treino/adversarial_probes.py).
+- **Como roda**: [`treino/evaluate_lora.py`](treino/evaluate_lora.py) responde cada pergunta com o mesmo modelo **sem** e **com** o adaptador e compara com o gabarito.
+- **Respostas e placar**: [`avaliacao/lora/`](avaliacao/lora/) (`base_predictions.jsonl`, `lora_predictions.jsonl` e `results.json`), mais a [revisão humana](avaliacao/lora/AUDITORIA.md) e os [5 erros](avaliacao/lora/ERROS.md).
+
+Resultado (24 casos, o mesmo modelo **antes** e **depois** do treino):
+
+| Métrica | Antes do treino (base 1.5B) | Depois do treino (base + LoRA) |
 |---|---:|---:|
 | JSON válido | 0/24 | **24/24** |
 | Esquema completo | 0/24 | **22/24** |
@@ -188,7 +216,7 @@ Resultado do LoRA no conjunto final congelado (24 casos, mesmo checkpoint com e 
 | Afirmação sem evidência ou contradita (revisão humana) | — | 7/24 |
 | Perguntas adversariais fora do padrão de treino | 0/6 | 1/6 |
 
-**Leitura honesta:** o treino ensinou o **formato e a política** (JSON, citar, marcar revisão humana) quase perfeitamente, mas **não ensinou a não inventar**: em 4 casos o modelo criou uma "última medição em 2023" quando a fonte estava fora do ar. Com 84 exemplos de 6 templates, o LoRA decora a forma, não o raciocínio. Por isso o produto usa **RAG + agente** com o modelo 3B e validação no código; o LoRA fica como experimento documentado, e os 5 erros dele estão em [`lora/ERROS_PILOTO1.md`](lora/ERROS_PILOTO1.md).
+**Leitura honesta:** o treino ensinou o **formato e a política** (JSON, citar, marcar revisão humana) quase perfeitamente, mas **não ensinou a não inventar**: em 4 casos o modelo criou uma "última medição em 2023" quando a fonte estava fora do ar. Com 84 exemplos de 6 templates, o LoRA decora a forma, não o raciocínio. Por isso o produto usa **RAG + agente** com o modelo 3B e validação no código; o LoRA fica como experimento documentado, e os 5 erros dele estão em [`avaliacao/lora/ERROS.md`](avaliacao/lora/ERROS.md). O passo a passo para refazer o treino está em [`treino/README.md`](treino/README.md).
 
 ## 9. Cinco erros reais e correções
 
@@ -245,20 +273,22 @@ python -m avaliacao.run --phase all --fresh
 ```powershell
 python -m pytest -q                         # 98 testes
 python -m avaliacao.criar_notebook --execute  # recria notebooks/experimentos.ipynb
-python lora/criar_notebook.py                 # recria notebooks/lora_qwen.ipynb
+python treino/criar_notebook.py               # recria notebooks/treino_lora.ipynb
 ```
 
-O treino LoRA exige CUDA no Linux/WSL2; passo a passo em [`lora/README.md`](lora/README.md).
+O treino LoRA exige CUDA no Linux/WSL2; passo a passo em [`treino/README.md`](treino/README.md).
 
 ## 12. O que tem em cada pasta
 
-| Pasta | Conteúdo |
+As três pastas pedidas no enunciado (`notebooks/`, `base/` e `avaliacao/`) mais o código:
+
+| Pasta | O que tem |
 |---|---|
-| `app/` | O produto: API FastAPI, busca (RAG), agente com ferramentas, cliente Ollama e a interface web em `app/static/` |
-| `base/` | Base de conhecimento: 41 trechos com fonte (`chunks.jsonl`), `FONTES.md` e os registros operacionais sintéticos |
-| `avaliacao/` | Casos com gabarito, executor, métricas, placar, os 5 erros, auditorias humanas e todas as respostas brutas em `resultados/` |
-| `notebooks/` | `experimentos.ipynb` (RAG × agente, com saídas) e `lora_qwen.ipynb` (resultado do treino LoRA, com saídas) |
-| `lora/` | Treino QLoRA: dataset congelado, script de treino e avaliação, adaptador treinado, resultados, e o agente V2 conectado à DrenaData/DrenaVision |
+| `notebooks/` | Os experimentos executados, com saídas salvas: `experimentos.ipynb` (busca, RAG × agente, placar e erros) e `treino_lora.ipynb` (curva de perda, prova dos pesos e antes × depois do treino) |
+| `base/` | Base de conhecimento: 41 trechos com fonte (`chunks.jsonl`), tabela de fontes (`FONTES.md`) e registros operacionais sintéticos (`operational.json`) |
+| `avaliacao/` | Teste e placar: 40 casos com gabarito (`casos.json`), placar e respostas brutas em `resultados/`, os 5 erros (`erros.md`), as revisões humanas e o teste do modelo treinado em `lora/` |
+| `treino/` | Como treinamos a LLM: dados de treino, script, histórico da perda e os pesos treinados (`adapter/`) |
+| `app/` | O produto: API, RAG, agente, conectores DrenaData/DrenaVision e o site em `static/` |
 | `tests/` | 98 testes automatizados |
 
 ## 13. Conclusão técnica

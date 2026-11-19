@@ -19,15 +19,15 @@ from .drenadata import load_gold_export
 from .drenavision import DrenaVisionClient
 from .inference_client import InferenceClient, InferenceClientError
 from .response_agent import AnswerRequest, AnswerResult, answer as answer_with_evidence
-from .train_lora import MODEL_ID, MODEL_REVISION
+from treino.train_lora import MODEL_ID, MODEL_REVISION
 
 
 router = APIRouter(prefix="/v2", tags=["DrenaAssist V2 - evidências"])
 LOGGER = logging.getLogger(__name__)
-TRAINING_MANIFEST = Path(__file__).resolve().parents[0] / "training_manifest.json"
-ADAPTER_WEIGHTS = Path(__file__).resolve().parents[0] / "adapter" / "adapter_model.safetensors"
-ADAPTER_CONFIG = Path(__file__).resolve().parents[0] / "adapter" / "adapter_config.json"
-ARTIFACT_MANIFEST = Path(__file__).resolve().parents[0] / "artifact_manifest.json"
+TRAINING_MANIFEST = Path(__file__).resolve().parents[1] / "treino" / "training_manifest.json"
+ADAPTER_WEIGHTS = Path(__file__).resolve().parents[1] / "treino" / "adapter" / "adapter_model.safetensors"
+ADAPTER_CONFIG = Path(__file__).resolve().parents[1] / "treino" / "adapter" / "adapter_config.json"
+ARTIFACT_MANIFEST = Path(__file__).resolve().parents[1] / "treino" / "artifact_manifest.json"
 
 
 def _registry() -> PointRegistry:

@@ -6,7 +6,7 @@ agente, generalização a documentos novos nem segurança operacional.
 
 Uso no ambiente CUDA isolado::
 
-    python -m lora.evaluate_lora \\
+    python -m treino.evaluate_lora \\
       --dataset /home/vitor/drenaassist-v2-train/dataset \\
       --adapter /home/vitor/drenaassist-v2-train/run/adapter \\
       --model-path /home/vitor/drenaassist-v2-train/model \\

@@ -6,8 +6,8 @@ import json
 
 import pytest
 
-from lora.adversarial_probes import build_probes
-from lora.evaluate_lora import (
+from treino.adversarial_probes import build_probes
+from treino.evaluate_lora import (
     MODEL_ID,
     MODEL_REVISION,
     parse_response,
@@ -15,7 +15,7 @@ from lora.evaluate_lora import (
     score_predictions,
     verify_dataset,
 )
-from lora.training_data import build_examples, write_dataset
+from treino.training_data import build_examples, write_dataset
 
 
 def _raw(expected: dict) -> str:

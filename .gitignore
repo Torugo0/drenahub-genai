@@ -13,6 +13,6 @@ entrega_local/
 models/
 *.gguf
 *.safetensors
-!lora/adapter/adapter_model.safetensors
+!treino/adapter/adapter_model.safetensors
 base/index.npz
 .claude/

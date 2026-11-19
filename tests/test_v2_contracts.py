@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 import pytest
 from pydantic import ValidationError
 
-from lora.contracts import Evidence, PointLink, PointRegistry
+from app.contracts import Evidence, PointLink, PointRegistry
 
 
 def test_unknown_points_stay_unmapped_even_when_names_look_related():

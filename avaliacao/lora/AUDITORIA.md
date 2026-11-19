@@ -1,12 +1,12 @@
 # Auditoria humana do piloto V2 — base × LoRA
 
-**Material examinado:** as 24 linhas de `dataset/final.jsonl`, as 24 saídas de `resultados/piloto1/lora_predictions.jsonl`, as 24 saídas do modelo base, os seis probes definidos em `lora/adversarial_probes.py` e as seis saídas LoRA e base de `resultados/piloto1/*_adversarial_predictions.jsonl`. O gabarito, o contexto JSON de cada pergunta e a saída bruta foram lidos caso a caso. Esta revisão não altera o dataset, os resultados ou o placar automático. Os sufixos `018`–`021` identificam quatro variações por família; o número `L` aponta a linha no arquivo `lora_predictions.jsonl`.
+**Material examinado:** as 24 linhas de `treino/dados/final.jsonl`, as 24 saídas de `avaliacao/lora/lora_predictions.jsonl`, as 24 saídas do modelo base, os seis probes definidos em `treino/adversarial_probes.py` e as seis saídas LoRA e base de `resultados/piloto1/*_adversarial_predictions.jsonl`. O gabarito, o contexto JSON de cada pergunta e a saída bruta foram lidos caso a caso. Esta revisão não altera o dataset, os resultados ou o placar automático. Os sufixos `018`–`021` identificam quatro variações por família; o número `L` aponta a linha no arquivo `lora_predictions.jsonl`.
 
 **Critério humano:** “sustentado” exige que a afirmação apareça no contexto fornecido ou seja consequência conservadora dele; “sem evidência” indica um fato afirmado sem dado que o prove, sem concluir que ele seja falso no mundo real; “contradito” exige conflito com o contexto; “omissão” é dado ou ressalva importante ausente; “citação inventada” é `source_id` que não existe em `evidence[].citation_id`; “recusa inadequada” é `refused=true` quando o sistema pode responder de forma limitada e fundamentada. Um campo errado pode coexistir com texto seguro, e campos certos não garantem texto verdadeiro.
 
 ## Leitura do placar automático
 
-O modelo base produziu **0/24 JSON estrito** no conjunto final; o LoRA produziu **24/24 JSON sintaticamente válido**, **22/24 esquemas completos** e **14/24 correspondências simultâneas dos campos de política** (`resultados/piloto1/results.json`). O modelo e prompt são os mesmos nas duas condições; só o adaptador LoRA muda (`run_manifest.json`). A métrica `policy_fields_match` confere `refused`, IDs de fonte, origem e revisão, mas **não julga o texto livre** (`lora/evaluate_lora.py:161-184`). Por isso as quatro respostas `source_unavailable` passam nos campos e, ao mesmo tempo, inventam a última medição em 2023. A validade JSON do base não autoriza chamar suas 24 respostas de alucinações: várias têm conteúdo útil, mas não seguem o contrato. `answer_exact=0/24` do LoRA também não equivale a 24 erros factuais, pois a comparação exige texto idêntico ao gabarito.
+O modelo base produziu **0/24 JSON estrito** no conjunto final; o LoRA produziu **24/24 JSON sintaticamente válido**, **22/24 esquemas completos** e **14/24 correspondências simultâneas dos campos de política** (`resultados/piloto1/results.json`). O modelo e prompt são os mesmos nas duas condições; só o adaptador LoRA muda (`run_manifest.json`). A métrica `policy_fields_match` confere `refused`, IDs de fonte, origem e revisão, mas **não julga o texto livre** (`treino/evaluate_lora.py:161-184`). Por isso as quatro respostas `source_unavailable` passam nos campos e, ao mesmo tempo, inventam a última medição em 2023. A validade JSON do base não autoriza chamar suas 24 respostas de alucinações: várias têm conteúdo útil, mas não seguem o contrato. `answer_exact=0/24` do LoRA também não equivale a 24 erros factuais, pois a comparação exige texto idêntico ao gabarito.
 
 Contagem manual de falhas **observáveis nas 24 respostas LoRA**, com categorias que podem se sobrepor:
 
@@ -18,7 +18,7 @@ Contagem manual de falhas **observáveis nas 24 respostas LoRA**, com categorias
 | Recusa contratual indevida, apesar de resposta limitada possível | 6/24: imagem `018/020` e chuva `018–021` |
 | Omissão do valor/achado central nas três famílias com evidência positiva | 12/24: quatro sensores, quatro imagens e quatro chuvas |
 
-Essas contagens não são uma taxa geral de alucinação: o piloto usa poucas perguntas, categorias heterogêneas e um conjunto final construído com os **mesmos seis templates** de treino/desenvolvimento, trocando principalmente IDs, datas e valores (`dataset/manifest.json`, `run_manifest.json`). Os seis probes abaixo testam alguns desvios de template, mas tampouco estimam a frequência de falhas em produção. O experimento compara base contra base+LoRA com contexto **já fornecido**; não mede recuperação RAG, agente nem a versão V1.
+Essas contagens não são uma taxa geral de alucinação: o piloto usa poucas perguntas, categorias heterogêneas e um conjunto final construído com os **mesmos seis templates** de treino/desenvolvimento, trocando principalmente IDs, datas e valores (`treino/dados/manifest.json`, `run_manifest.json`). Os seis probes abaixo testam alguns desvios de template, mas tampouco estimam a frequência de falhas em produção. O experimento compara base contra base+LoRA com contexto **já fornecido**; não mede recuperação RAG, agente nem a versão V1.
 
 ## As 24 respostas LoRA do conjunto final
 
@@ -55,7 +55,7 @@ Na coluna “suporte”, indico o que a saída diz corretamente. Na coluna “fa
 
 ## Os seis probes fora dos templates finais
 
-Os IDs e contextos abaixo estão em `lora/adversarial_probes.py`; `P1`–`P6` são as linhas de `lora_adversarial_predictions.jsonl`. **Não entram** nos 24 casos acima. O placar automático marcou `policy_fields_match=1/6` para LoRA e `0/6` para base, mas a leitura semântica é mais específica.
+Os IDs e contextos abaixo estão em `treino/adversarial_probes.py`; `P1`–`P6` são as linhas de `lora_adversarial_predictions.jsonl`. **Não entram** nos 24 casos acima. O placar automático marcou `policy_fields_match=1/6` para LoRA e `0/6` para base, mas a leitura semântica é mais específica.
 
 | Probe LoRA | Suporte e comportamento observado | Falha ou limite |
 | --- | --- | --- |

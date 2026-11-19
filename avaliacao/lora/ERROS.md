@@ -1,6 +1,6 @@
 # Cinco erros reais do piloto V2
 
-As saídas abaixo são **brutas** e estão em `resultados/piloto1/lora_predictions.jsonl` ou `lora_adversarial_predictions.jsonl`. Os contextos de D01–D24 estão em `dataset/final.jsonl`; os seis probes estão definidos em `lora/adversarial_probes.py`. As correções são **propostas**, não foram aplicadas ao piloto. Uma falha de campo JSON não é automaticamente erro factual; cada caso foi confrontado com sua evidência.
+As saídas abaixo são **brutas** e estão em `avaliacao/lora/lora_predictions.jsonl` ou `lora_adversarial_predictions.jsonl`. Os contextos de D01–D24 estão em `treino/dados/final.jsonl`; os seis probes estão definidos em `treino/adversarial_probes.py`. As correções são **propostas**, não foram aplicadas ao piloto. Uma falha de campo JSON não é automaticamente erro factual; cada caso foi confrontado com sua evidência.
 
 ## 1. Fonte indisponível virou medição inventada
 

@@ -6,7 +6,7 @@ e métricas. As células são executadas com nbclient e suas saídas ficam salva
 
 Exemplo::
 
-    python lora/criar_notebook.py --results lora/resultados/piloto1
+    python treino/criar_notebook.py
 """
 
 from __future__ import annotations
@@ -25,8 +25,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lora.adversarial_probes import build_probes  # noqa: E402
-from lora.evaluate_lora import score_predictions  # noqa: E402
+from treino.adversarial_probes import build_probes  # noqa: E402
+from treino.evaluate_lora import score_predictions  # noqa: E402
 
 
 @dataclass(frozen=True)
@@ -198,13 +198,13 @@ def build_notebook(sources: Sources):
         import sys
 
         ROOT = Path.cwd().resolve()
-        if not (ROOT / "lora" / "adapter").is_dir():
+        if not (ROOT / "treino" / "adapter").is_dir():
             ROOT = ROOT.parent
-        assert (ROOT / "lora" / "adapter").is_dir(), "Abra o notebook no repositório DrenaAssist"
+        assert (ROOT / "treino" / "adapter").is_dir(), "Abra o notebook no repositório DrenaAssist"
         if str(ROOT) not in sys.path:
             sys.path.insert(0, str(ROOT))
-        from lora.evaluate_lora import score_predictions
-        from lora.adversarial_probes import build_probes
+        from treino.evaluate_lora import score_predictions
+        from treino.adversarial_probes import build_probes
         TRAINING_FILE = {training_expr}
         DATASET_DIR = {dataset_expr}
         ADAPTER_DIR = {adapter_expr}
@@ -268,6 +268,36 @@ def build_notebook(sources: Sources):
             ("Bibliotecas", f"torch {training['torch']}; transformers {training['transformers']}; peft {training['peft']}"),
         ]
         display(Markdown("| Item | Valor |\\n|:--|:--|\\n" + "\\n".join(f"| {a} | {b} |" for a, b in values)))
+        """),
+        _markdown("""
+        ### Prova de que os pesos foram treinados
+
+        1. **Curva de perda**: `treino/historico_treino.json` é o `trainer_state.json` salvo pelo
+           Hugging Face Trainer no passo 42. A perda cai a cada registro.
+        2. **Pesos alterados**: o PEFT cria toda matriz `lora_B` com **zeros**. Se o treino não tivesse
+           acontecido, o adaptador seria nulo. Abaixo contamos quantas matrizes `lora_B` deixaram de ser zero.
+        """),
+        _code("""
+        import matplotlib.pyplot as plt
+        import numpy as np
+        from safetensors.numpy import load_file
+
+        history = read_json(ROOT / "treino" / "historico_treino.json")["log_history"]
+        train_points = [(h["step"], h["loss"]) for h in history if "loss" in h]
+        eval_points = [(h["step"], h["eval_loss"]) for h in history if "eval_loss" in h]
+        display(Markdown("| Passo | Perda de treino |\\n|--:|--:|\\n" + "\\n".join(f"| {s} | {l:.4f} |" for s, l in train_points)
+                         + "\\n\\n**Perda de validação:** " + ", ".join(f"passo {s}: {l:.4f}" for s, l in eval_points)))
+        fig, ax = plt.subplots(figsize=(6, 3))
+        ax.plot(*zip(*train_points), marker="o", label="treino")
+        ax.plot(*zip(*eval_points), marker="s", label="validação")
+        ax.set_xlabel("passo"); ax.set_ylabel("perda"); ax.set_title("QLoRA · Qwen2.5-1.5B-Instruct"); ax.legend()
+        plt.tight_layout(); plt.show()
+
+        weights = load_file(str(ROOT / "treino" / "adapter" / "adapter_model.safetensors"))
+        lora_b = [name for name in weights if "lora_B" in name]
+        changed = sum(bool(np.any(weights[name] != 0)) for name in lora_b)
+        print(f"Matrizes lora_B diferentes de zero: {changed}/{len(lora_b)}")
+        assert changed == len(lora_b) > 0
         """),
         _markdown("""
         ## 3 · Mesmo checkpoint, base × LoRA
@@ -424,11 +454,11 @@ def write_notebook(sources: Sources, output: Path) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--training-manifest", type=Path, default=ROOT / "lora" / "training_manifest.json")
-    parser.add_argument("--dataset", type=Path, default=ROOT / "lora" / "dataset")
-    parser.add_argument("--adapter", type=Path, default=ROOT / "lora" / "adapter")
-    parser.add_argument("--results", type=Path, default=ROOT / "lora" / "resultados" / "piloto1")
-    parser.add_argument("--output", type=Path, default=ROOT / "notebooks" / "lora_qwen.ipynb")
+    parser.add_argument("--training-manifest", type=Path, default=ROOT / "treino" / "training_manifest.json")
+    parser.add_argument("--dataset", type=Path, default=ROOT / "treino" / "dados")
+    parser.add_argument("--adapter", type=Path, default=ROOT / "treino" / "adapter")
+    parser.add_argument("--results", type=Path, default=ROOT / "avaliacao" / "lora")
+    parser.add_argument("--output", type=Path, default=ROOT / "notebooks" / "treino_lora.ipynb")
     args = parser.parse_args()
     sources = validate_sources(args.training_manifest, args.dataset, args.adapter, args.results)
     output = write_notebook(sources, args.output.resolve())

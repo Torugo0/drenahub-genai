@@ -12,7 +12,7 @@ from urllib.parse import urlparse
 import httpx
 from pydantic import ValidationError
 
-from .inference_contracts import GenerateRequest, GenerateResponse, HealthResponse
+from treino.inference_contracts import GenerateRequest, GenerateResponse, HealthResponse
 
 
 DEFAULT_URL = "http://127.0.0.1:8765"

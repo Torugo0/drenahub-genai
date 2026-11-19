@@ -5,8 +5,8 @@ from datetime import datetime
 import httpx
 import pytest
 
-from lora.contracts import PointLink, PointRegistry, SourceUnavailable
-from lora.drenavision import DrenaVisionClient
+from app.contracts import PointLink, PointRegistry, SourceUnavailable
+from app.drenavision import DrenaVisionClient
 
 
 def test_vision_url_rejects_embedded_credentials():

@@ -3,9 +3,9 @@
 from datetime import datetime, timezone
 from types import SimpleNamespace
 
-from lora.contracts import Evidence, SourceUnavailable
-from lora.response_agent import AnswerRequest, _claim_issues, answer, gather_evidence
-from lora.train_lora import MODEL_ID, MODEL_REVISION
+from app.contracts import Evidence, SourceUnavailable
+from app.response_agent import AnswerRequest, _claim_issues, answer, gather_evidence
+from treino.train_lora import MODEL_ID, MODEL_REVISION
 
 
 def _evidence(review_status="not_applicable"):

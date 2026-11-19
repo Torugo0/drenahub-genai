@@ -7,10 +7,10 @@ import json
 import nbformat
 import pytest
 
-from lora.criar_notebook import ROOT, validate_sources, write_notebook
-from lora.adversarial_probes import build_probes
-from lora.evaluate_lora import score_predictions
-from lora.training_data import build_examples, write_dataset
+from treino.criar_notebook import ROOT, validate_sources, write_notebook
+from treino.adversarial_probes import build_probes
+from treino.evaluate_lora import score_predictions
+from treino.training_data import build_examples, write_dataset
 
 
 def _write_json(path, data):
@@ -21,7 +21,7 @@ def _write_json(path, data):
 def _fixture(tmp_path):
     dataset_dir = tmp_path / "dataset"
     dataset_manifest = write_dataset(dataset_dir)
-    actual_training = json.loads((ROOT / "lora" / "training_manifest.json").read_text(encoding="utf-8"))
+    actual_training = json.loads((ROOT / "treino" / "training_manifest.json").read_text(encoding="utf-8"))
     training_file = tmp_path / "training_manifest.json"
     _write_json(training_file, actual_training)
 

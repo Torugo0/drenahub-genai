@@ -1,5 +1,5 @@
-lora/dataset/*.jsonl text eol=lf
-lora/dataset/manifest.json text eol=lf
-lora/*.json text eol=lf
-lora/adapter/*.json text eol=lf
+treino/dados/*.jsonl text eol=lf
+treino/dados/manifest.json text eol=lf
+treino/*.json text eol=lf
+treino/adapter/*.json text eol=lf
 *.safetensors binary

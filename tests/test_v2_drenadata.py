@@ -7,8 +7,8 @@ from datetime import datetime, timezone
 
 import pytest
 
-from lora.contracts import PointLink, PointRegistry, SourceUnavailable
-from lora.drenadata import load_gold_export
+from app.contracts import PointLink, PointRegistry, SourceUnavailable
+from app.drenadata import load_gold_export
 
 
 @pytest.fixture

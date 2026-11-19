@@ -8,7 +8,7 @@ import re
 from collections import Counter
 from pathlib import Path
 
-from lora.training_data import (
+from treino.training_data import (
     FAMILIES,
     SYSTEM_PROMPT,
     WEATHER_OBSERVATIONS,

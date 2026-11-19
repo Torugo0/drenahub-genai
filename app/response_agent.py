@@ -16,9 +16,9 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .contracts import Evidence
 from .inference_client import InferenceClient
-from .training_data import SYSTEM_PROMPT
-from .evaluate_lora import parse_response
-from .train_lora import MODEL_ID, MODEL_REVISION
+from treino.training_data import SYSTEM_PROMPT
+from treino.evaluate_lora import parse_response
+from treino.train_lora import MODEL_ID, MODEL_REVISION
 
 
 SourceChoice = Literal["drenadata_latest", "drenavision_events", "rain_history"]
