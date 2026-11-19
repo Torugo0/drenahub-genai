@@ -259,3 +259,14 @@ def test_leading_refusal_sentence_is_removed_from_real_answer(tmp_path, monkeypa
     result = ask("Como limpar um ralo?", "rag", client=client, retriever=OneChunkRetriever())
     assert result.refused is False
     assert result.answer == "Limpe a caixa de captação, não só a grelha."
+
+
+def test_agent_accepts_difference_computed_from_cited_readings(tmp_path, monkeypatch):
+    monkeypatch.setenv("DRENA_TOOL_LOG_PATH", str(tmp_path / "calls.jsonl"))
+    client = FakeClient([
+        json.dumps({"calls": [{"name": "get_sensor_readings", "arguments": {"point_id": "RALO-01"}}]}),
+        json.dumps({"answer": "Subiu de 8,4 cm para 11,2 cm, aumento de 2,8 cm.", "refused": False, "source_ids": ["LE-002", "LE-001"], "reason": "Leituras consultadas.", "suggested_actions": []}),
+    ])
+    result = ask("Como mudou a leitura de água do RALO-01 entre as duas medições?", "agent", client=client, retriever=FakeRetriever())
+    assert result.refused is False
+    assert result.metadata["invalid_operational_claims"] == []

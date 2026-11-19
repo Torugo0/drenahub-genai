@@ -255,6 +255,11 @@ def _unsupported_operational_claims(answer: str, operational_context: list[dict[
     allowed_cm.update(float(row["alert_level_cm"]) for row in records if "alert_level_cm" in row)
     evidence_text = json.dumps(records, ensure_ascii=False) + " " + json.dumps(cited_documents, ensure_ascii=False)
     allowed_cm.update(float(value.replace(",", ".")) for value in re.findall(r"(\d+(?:[,.]\d+)?)\s*cm\b", evidence_text, re.IGNORECASE))
+    # Contas feitas com valores das evidências (variação entre leituras, quanto passou do limite)
+    # são permitidas; números que não saem das evidências continuam barrados.
+    base_values = sorted(allowed_cm)
+    allowed_cm.update(round(abs(a - b), 2) for a in base_values for b in base_values)
+    allowed_cm.update(round(a + b, 2) for a in base_values for b in base_values)
     problems = []
     for value in re.findall(r"(\d+(?:[,.]\d+)?)\s*cm\b", answer, re.IGNORECASE):
         number = float(value.replace(",", "."))
