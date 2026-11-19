@@ -16,12 +16,12 @@
     <div class="topbar-inner">
       <a class="brand" href="/v2/console" aria-label="DrenaHub, console de evidências">
         <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 7C25 18 14 28 14 40a18 18 0 0 0 36 0C50 28 39 18 32 7Z" fill="currentColor"/><path d="M20 42c5-4 8-4 13 0s8 4 12 0M21 49c5-3 8-3 12 0s7 3 11 0" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3"/></svg>
-        <span>DRENA<span>HUB</span><small>Central de inteligência em drenagem</small></span>
+        <span class="brand-text">DrenaAssist</span>
       </a>
       <nav class="topnav" aria-label="Navegação principal">
-        <a class="nav-current" href="/v2/console" aria-current="page">Console V2</a>
-        <a href="#agente">Agente de resposta</a>
-        <a href="/">Assistente atual</a>
+        <a href="/">Central</a>
+        <a href="/#avaliacao">Avaliação</a>
+        <a class="nav-current" href="/v2/console" aria-current="page">Fontes DrenaData e DrenaVision</a>
         <a href="/docs">API</a>
       </nav>
       <span class="topbar-tag"><span class="tag-dot"></span> Integração local</span>
@@ -29,32 +29,12 @@
   </header>
 
   <main id="conteudo">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-inner">
-        <div class="hero-copy">
-          <p class="eyebrow eyebrow-light"><span></span> DrenaHub / DrenaAssist V2</p>
-          <h1 id="hero-title">Cada evidência no seu contexto.</h1>
-          <p class="hero-lead">Consulte os registros da DrenaData e da DrenaVision com horário, origem e referência da fonte. Este painel mostra o que cada sistema forneceu, sem inferir um vínculo entre IDs externos.</p>
-          <div class="hero-actions">
-            <a class="button button-mint" href="#fontes">Explorar fontes <span aria-hidden="true">↗</span></a>
-            <a class="hero-link" href="#como-ler">Como ler as evidências <span aria-hidden="true">↓</span></a>
-          </div>
-        </div>
-        <div class="hero-visual" aria-label="DrenaData e DrenaVision enviam evidências separadas ao console DrenaAssist">
-          <div class="visual-grid" aria-hidden="true"></div>
-          <div class="visual-halo" aria-hidden="true"></div>
-          <div class="visual-center">
-            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 7C25 18 14 28 14 40a18 18 0 0 0 36 0C50 28 39 18 32 7Z" fill="currentColor"/><path d="M20 42c5-4 8-4 13 0s8 4 12 0M21 49c5-3 8-3 12 0s7 3 11 0" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3"/></svg>
-            <strong>DrenaAssist</strong><span>Console de evidências</span>
-          </div>
-          <div class="visual-source visual-data"><span class="visual-icon">≋</span><span><strong>DrenaData</strong><small>Leituras e chuva</small></span></div>
-          <div class="visual-source visual-vision"><span class="visual-icon">◎</span><span><strong>DrenaVision</strong><small>Eventos de análise</small></span></div>
-          <div class="visual-caption">Fontes independentes · vínculos somente verificados</div>
-        </div>
-      </div>
-    </section>
-
     <div class="main-wrap">
+      <header class="page-intro">
+        <h1>Fontes conectadas</h1>
+        <p>Leituras da exportação Ouro da DrenaData, eventos da API da DrenaVision e chuva histórica real da Open-Meteo. Tudo é lido sem alterar nada na origem. No fim da página, o agente usa essas fontes com o modelo base ou com o modelo que treinamos (LoRA).</p>
+      </header>
+
       <section class="readiness" aria-label="Estado da integração">
         <div class="readiness-intro"><span class="readiness-icon">↗</span><div><strong>Estado da integração</strong><span>Configuração da instância local, sem prova de disponibilidade.</span></div></div>
         <div class="readiness-items">

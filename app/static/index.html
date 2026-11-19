@@ -3,218 +3,121 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#102637">
-  <meta name="description" content="DrenaAssist: consulte o modelo local, confira as evidências e explore a avaliação das três configurações.">
+  <meta name="theme-color" content="#13343B">
+  <meta name="description" content="DrenaAssist: central do operador para consultar pontos de drenagem, procedimentos técnicos e preparar ordens de serviço com fontes citadas.">
   <title>DrenaAssist · DrenaHub</title>
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/static/styles.css">
   <script src="/static/app.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-  <header class="topbar">
-    <div class="shell topbar-inner">
-      <a class="brand" href="#inicio" aria-label="DrenaHub, início do DrenaAssist">
-        <svg viewBox="0 0 44 44" width="44" height="44" aria-hidden="true">
-          <path d="M22 3.5C16.7 11.2 7.5 21 7.5 28.1a14.5 14.5 0 0 0 29 0C36.5 21 27.3 11.2 22 3.5Z" fill="currentColor"/>
-          <path d="M12.2 28.1c3.5-2.6 6.1-2.6 9.6 0s6.1 2.6 9.6 0M14 33c3-1.9 5.3-1.9 8.1 0s5.1 1.9 8.1 0" fill="none" stroke="#102637" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-        <span class="brand-word">Drena<span>Hub</span><small>DrenaAssist</small></span>
-      </a>
-      <nav class="top-nav" aria-label="Navegação principal">
-        <a href="#assistente">Assistente</a>
-        <a href="#avaliacao">Avaliação</a>
-        <a href="/docs" target="_blank" rel="noopener noreferrer"><span class="nav-long">Documentação da API</span><span class="nav-short">API</span></a>
-      </nav>
-      <span class="topbar-label">IA local · demonstração</span>
-    </div>
+  <a class="skip-link" href="#consulta">Pular para a consulta</a>
+
+  <header class="bar">
+    <a class="brand" href="#consulta" aria-label="DrenaAssist, central do operador">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
+        <path d="M16 3C12 9 6 15.5 6 20.5a10 10 0 0 0 20 0C26 15.5 20 9 16 3Z" fill="currentColor"/>
+        <path d="M10.5 21c2.3-1.7 4-1.7 5.5 0s3.2 1.7 5.5 0" fill="none" stroke="#13343B" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span>DrenaAssist</span>
+    </a>
+    <nav class="views" aria-label="Seções">
+      <a href="#consulta" data-view="consulta" aria-current="page">Central</a>
+      <a href="#avaliacao" data-view="avaliacao">Avaliação</a>
+      <a href="/v2/console">Fontes DrenaData e DrenaVision</a>
+      <a href="/docs" target="_blank" rel="noopener noreferrer">API</a>
+    </nav>
+    <p class="model-status" aria-live="polite">
+      <span class="health-dot" id="health-dot" aria-hidden="true"></span>
+      <span id="health-label">Verificando modelo local</span>
+      <span class="model-name" id="model-name"></span>
+    </p>
   </header>
 
-  <main id="conteudo">
-    <section class="hero shell" id="inicio" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <span class="eyebrow eyebrow-light">DRENAHUB / INTELIGÊNCIA OPERACIONAL</span>
-        <h1 id="hero-title">Uma resposta melhor começa <em>pela evidência.</em></h1>
-        <p>Faça perguntas sobre drenagem, confira as fontes consultadas e veja como a mesma IA se comporta com diferentes níveis de contexto.</p>
-        <div class="hero-status" aria-live="polite">
-          <span class="health-dot" id="health-dot" aria-hidden="true"></span>
-          <span id="health-label">Verificando o modelo local…</span>
-          <span class="status-divider" aria-hidden="true"></span>
-          <span id="model-name">DrenaAssist</span>
-        </div>
+  <div class="view" id="view-consulta">
+    <aside class="points" aria-labelledby="points-title">
+      <div class="points-head">
+        <h2 id="points-title">Pontos monitorados</h2>
+        <p id="points-summary">Carregando pontos</p>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="art-grid"></div>
-        <div class="orbit orbit-one"></div>
-        <div class="orbit orbit-two"></div>
-        <div class="orbit orbit-three"></div>
-        <div class="art-core">
-          <svg viewBox="0 0 92 92" width="92" height="92">
-            <path d="M46 9c-9 13-26 30-26 43a26 26 0 0 0 52 0C72 39 55 22 46 9Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
-            <path d="M29 53c7-5 12-5 19 0s12 5 19 0M32 63c5-3 9-3 14 0s9 3 14 0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
+      <div id="points-list" class="points-list"></div>
+      <p class="points-note">Registros de demonstração gerados para o protótipo. Nível de alerta: 10 cm.</p>
+    </aside>
+
+    <main class="work" id="consulta" tabindex="-1">
+      <form id="ask-form" class="composer" novalidate>
+        <div class="context-line" id="context-fields">
+          <div class="context-selects">
+            <label for="location-id">Local</label>
+            <select id="location-id" name="location_id"><option value="">Qualquer local</option></select>
+            <label for="point-id">Ponto</label>
+            <select id="point-id" name="point_id"><option value="">Qualquer ponto</option></select>
+          </div>
+          <button type="button" class="link-button" id="clear-context" hidden>Limpar seleção</button>
         </div>
-        <div class="art-label label-one">Pergunta</div>
-        <div class="art-label label-two">Fontes</div>
-        <div class="art-label label-three">Revisão humana</div>
+
+        <div class="quick" id="quick-actions" aria-label="Perguntas rápidas"></div>
+
+        <label class="sr-only" for="question">Pergunta</label>
+        <textarea id="question" name="question" rows="3" minlength="3" maxlength="1000" placeholder="Pergunte sobre um ponto, uma ocorrência ou um procedimento. Ex.: O que registrar quando uma caixa de captação é limpa?" required></textarea>
+
+        <div class="composer-foot">
+          <fieldset class="modes">
+            <legend>Como a IA responde</legend>
+            <label><input type="radio" name="configuration" value="agent" checked><span>Agente<small>documentos e registros</small></span></label>
+            <label><input type="radio" name="configuration" value="rag"><span>Só documentos<small>RAG</small></span></label>
+            <label><input type="radio" name="configuration" value="baseline"><span>Sem contexto<small>para comparação</small></span></label>
+          </fieldset>
+          <div class="send">
+            <button class="button-primary" id="ask-button" type="submit">Perguntar</button>
+            <button class="button-quiet" id="cancel-button" type="button" hidden>Cancelar</button>
+          </div>
+        </div>
+        <p class="request-status" id="request-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <section class="feed" id="answer-panel" aria-label="Respostas" tabindex="-1">
+        <div class="feed-empty" id="answer-empty">
+          <h2>Comece por um ponto em alerta</h2>
+          <p>Selecione um ponto na lista para ver perguntas prontas sobre ele, ou escreva uma dúvida sobre limpeza, inspeção ou segurança. Toda resposta mostra de onde veio a informação. Quando não houver evidência, a resposta é <q>Não consta nos dados disponíveis.</q></p>
+          <div class="starter" id="starter-questions"></div>
+        </div>
+        <ol class="feed-list" id="answer-content"></ol>
+      </section>
+    </main>
+  </div>
+
+  <div class="view eval" id="view-avaliacao" hidden>
+    <main class="eval-inner" id="avaliacao" tabindex="-1">
+      <header class="eval-head">
+        <h1>Avaliação com gabarito</h1>
+        <p>A mesma LLM local respondeu as mesmas 40 perguntas em três modos. O placar foi calculado por regras fixas a partir de um gabarito escrito antes da execução, sem usar uma LLM como juiz.</p>
+        <p class="case-count" id="case-count">Carregando casos</p>
+      </header>
+      <div id="evaluation-status" class="evaluation-status" role="status" aria-live="polite">Carregando resultados da avaliação</div>
+      <div id="evaluation-content" hidden>
+        <div class="benchmark-grid" id="benchmark-grid"></div>
+        <section class="eval-block">
+          <h2>Respostas com informação inventada, na revisão humana</h2>
+          <div class="unsupported-bars invented">
+            <div class="unsupported-row"><span>Sem contexto</span><div class="unsupported-track" role="img" aria-label="15 de 19 respostas"><span style="width:79%"></span></div><strong class="bar-value">15/19</strong></div>
+            <div class="unsupported-row"><span>Só documentos</span><div class="unsupported-track" role="img" aria-label="1 de 16 respostas"><span style="width:6%"></span></div><strong class="bar-value">1/16</strong></div>
+            <div class="unsupported-row"><span>Agente</span><div class="unsupported-track" role="img" aria-label="4 de 30 respostas"><span style="width:13%"></span></div><strong class="bar-value">4/30</strong></div>
+          </div>
+          <p class="method-note">Cada resposta que trouxe conteúdo foi conferida contra os documentos e registros. Conta como invenção qualquer afirmação sem evidência ou que contradiz a evidência. Detalhes em <code>avaliacao/AUDITORIA_SEMANTICA.md</code>.</p>
+        </section>
+        <section class="eval-block">
+          <h2>Afirmações sem suporte detectadas pelo placar</h2>
+          <div id="unsupported-bars" class="unsupported-bars"></div>
+          <p class="method-note">Indicador automático. O modo sem contexto foi instruído a não citar fontes, e o placar marca como sem suporte toda resposta sem citação. Por isso a revisão humana acima é a medida de invenção.</p>
+        </section>
+        <section class="eval-block" id="audit-panel" hidden>
+          <h2>Teste final e recusas</h2>
+          <div class="audit-grid" id="audit-grid"></div>
+          <p class="audit-finding" id="audit-finding"></p>
+        </section>
       </div>
-    </section>
-
-    <div class="shell">
-      <aside class="truth-banner" role="note">
-        <span class="truth-icon" aria-hidden="true">i</span>
-        <p><strong>Ambiente demonstrativo.</strong> Leituras, inspeções e ocorrências são sintéticas. O assistente não monitora sensores em tempo real, não prevê alagamentos e não executa ordens de serviço.</p>
-      </aside>
-
-      <section id="assistente" class="workspace-section" aria-labelledby="assistente-title">
-        <div class="section-intro">
-          <div>
-            <span class="eyebrow">ASSISTENTE</span>
-            <h2 id="assistente-title">Explore uma consulta real</h2>
-            <p>A resposta vem da API local e é gerada no momento da consulta.</p>
-          </div>
-          <span class="section-chip">Mesmo modelo, três configurações</span>
-        </div>
-
-        <div class="workspace-grid">
-          <div class="main-column">
-            <form id="ask-form" class="panel ask-panel" novalidate>
-              <div class="panel-heading">
-                <span class="panel-symbol" aria-hidden="true">✦</span>
-                <div>
-                  <h3>Faça sua pergunta</h3>
-                  <p>Escolha o contexto disponível para o modelo.</p>
-                </div>
-              </div>
-
-              <fieldset class="mode-fieldset">
-                <legend>Configuração da IA</legend>
-                <div class="mode-options">
-                  <label class="mode-option">
-                    <input type="radio" name="configuration" value="baseline">
-                    <span><strong>Sem contexto</strong><small>Somente a LLM</small></span>
-                  </label>
-                  <label class="mode-option">
-                    <input type="radio" name="configuration" value="rag">
-                    <span><strong>Com documentos</strong><small>Busca + LLM</small></span>
-                  </label>
-                  <label class="mode-option">
-                    <input type="radio" name="configuration" value="agent" checked>
-                    <span><strong>Agente</strong><small>Busca + ferramentas</small></span>
-                  </label>
-                </div>
-              </fieldset>
-
-              <label class="field-label" for="question">Sua pergunta</label>
-              <textarea id="question" name="question" rows="4" minlength="3" maxlength="1000" placeholder="Ex.: Por que a Garagem A está com prioridade alta?" aria-describedby="question-help" required></textarea>
-              <p class="field-help" id="question-help">De 3 a 1.000 caracteres. Evite informações pessoais.</p>
-
-              <div class="context-fields" id="context-fields">
-                <div class="context-head"><span>Contexto operacional</span><small>Registros sintéticos</small></div>
-                <div class="field-grid">
-                  <div>
-                    <label class="field-label" for="location-id">Local</label>
-                    <select id="location-id" name="location_id">
-                      <option value="">Inferir pela pergunta</option>
-                      <option value="GAR-A">Garagem A · GAR-A</option>
-                      <option value="GAR-B">Garagem B · GAR-B</option>
-                      <option value="GAL-1">Galpão Norte · GAL-1</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label class="field-label" for="point-id">Ponto</label>
-                    <select id="point-id" name="point_id"><option value="">Inferir pela pergunta</option></select>
-                  </div>
-                </div>
-              </div>
-
-              <div class="example-block">
-                <p>Experimente uma pergunta</p>
-                <div class="example-list" aria-label="Perguntas de exemplo">
-                  <button type="button" class="example-button" data-example="inspection">Como registrar uma inspeção?</button>
-                  <button type="button" class="example-button" data-example="refusal">Teste de recusa</button>
-                  <button type="button" class="example-button" data-example="priority">Prioridade da Garagem A</button>
-                  <button type="button" class="example-button" data-example="work-order">Rascunho de OS</button>
-                </div>
-              </div>
-
-              <div class="form-footer">
-                <button class="button-primary" id="ask-button" type="submit"><span class="button-icon" aria-hidden="true">✦</span> Consultar DrenaAssist</button>
-                <button class="button-quiet" id="cancel-button" type="button" hidden>Cancelar consulta</button>
-                <span class="request-status" id="request-status" role="status" aria-live="polite"></span>
-              </div>
-            </form>
-
-            <section class="panel answer-panel" id="answer-panel" aria-label="Resposta do assistente" tabindex="-1">
-              <div class="answer-empty" id="answer-empty">
-                <div class="empty-mark" aria-hidden="true">✧</div>
-                <span class="eyebrow">RESPOSTA EXPLICÁVEL</span>
-                <h3 id="answer-title">A evidência aparece aqui</h3>
-                <p>Faça uma consulta para ver a resposta, as fontes e o caminho percorrido pelo assistente.</p>
-              </div>
-              <div id="answer-content" hidden></div>
-            </section>
-          </div>
-
-          <aside class="side-column" aria-label="Informações da consulta">
-            <section class="panel mode-panel" aria-labelledby="mode-panel-title">
-              <span class="eyebrow">COMO FUNCIONA</span>
-              <h3 id="mode-panel-title">O contexto muda a resposta</h3>
-              <p id="mode-description">O agente usa documentos técnicos e consulta registros operacionais sintéticos por ferramentas somente de leitura.</p>
-              <div class="mode-steps" aria-label="Etapas do assistente">
-                <div><span class="step-mark">1</span><span><strong>Pergunta</strong><small>Você define o que precisa saber.</small></span></div>
-                <div><span class="step-mark">2</span><span><strong>Consulta</strong><small id="step-consultation">Documentos e ferramentas autorizadas.</small></span></div>
-                <div><span class="step-mark">3</span><span><strong>Resposta</strong><small>Fontes e limitações ficam visíveis.</small></span></div>
-              </div>
-            </section>
-            <section class="panel score-teaser" aria-labelledby="score-teaser-title">
-              <div class="panel-topline"><span class="eyebrow">AVALIAÇÃO SALVA</span><span class="mini-ring" aria-hidden="true"></span></div>
-              <h3 id="score-teaser-title">Desempenho medido, sem esconder as falhas.</h3>
-              <p id="score-teaser-copy">Carregando o placar das três configurações…</p>
-              <a href="#avaliacao" class="text-link">Examinar o placar</a>
-            </section>
-            <div class="review-note"><span class="review-note-icon" aria-hidden="true">✓</span><p><strong>Decisão humana.</strong> Um pré-chamado gerado pelo agente é apenas um rascunho. A manutenção depende de inspeção e aprovação por uma pessoa responsável.</p></div>
-          </aside>
-        </div>
-      </section>
-
-      <section id="avaliacao" class="evaluation-section" aria-labelledby="evaluation-title">
-        <div class="section-intro">
-          <div>
-            <span class="eyebrow">AVALIAÇÃO COM GABARITO</span>
-            <h2 id="evaluation-title">O que foi medido</h2>
-            <p>Resultados salvos para as três configurações da mesma LLM local.</p>
-          </div>
-          <span class="section-chip" id="case-count">Carregando casos…</span>
-        </div>
-        <div id="evaluation-status" class="evaluation-status" role="status" aria-live="polite">Carregando resultados da avaliação…</div>
-        <div id="evaluation-content" hidden>
-          <div class="benchmark-grid" id="benchmark-grid"></div>
-          <aside class="metric-warning" role="note">
-            <span aria-hidden="true">!</span>
-            <p><strong>Como interpretar:</strong> o indicador de “afirmações sem suporte detectadas” mistura falta de citação com possível erro factual. O baseline foi instruído a responder sem citar fontes. Por isso, essa comparação <strong>não comprova uma redução percentual de alucinações</strong>.</p>
-          </aside>
-          <div class="benchmark-detail panel">
-            <div class="benchmark-detail-head">
-              <div><span class="eyebrow">COMPARAÇÃO</span><h3>Afirmações sem suporte detectadas</h3></div>
-              <span class="metric-label">Interpretação limitada</span>
-            </div>
-            <div id="unsupported-bars" class="unsupported-bars"></div>
-            <p class="method-note">Esta é uma detecção automática com regras e gabaritos, não uma taxa comprovada de alucinação. Os resultados descrevem o conjunto de teste salvo; uma resposta individual ainda pode falhar.</p>
-          </div>
-          <div class="audit-panel panel" id="audit-panel" hidden>
-            <div class="audit-heading"><span class="eyebrow">AUDITORIA DAS RESPOSTAS SALVAS</span><h3>O teste final e a cobertura</h3><p>O ganho de acertos é medido com gabarito, mas ainda há respostas ausentes e erros que a pontuação automática não captura.</p></div>
-            <div class="audit-grid" id="audit-grid"></div>
-            <p class="audit-finding" id="audit-finding"></p>
-          </div>
-        </div>
-      </section>
-
-      <footer class="footer">
-        <span>DrenaAssist · DrenaHub · FIAP Global Solution 2026</span>
-        <span>Modelo local · dados operacionais sintéticos · revisão humana</span>
-      </footer>
-    </div>
-  </main>
+    </main>
+  </div>
 </body>
 </html>

@@ -24,3 +24,15 @@ def test_local_ui_and_assets_are_served_without_breaking_api_docs():
     assert client.get("/static/favicon.svg").status_code == 200
 
     assert client.get("/docs").status_code == 200
+
+
+def test_operational_overview_lists_points_with_latest_records():
+    client = TestClient(app)
+    data = client.get("/operational/overview").json()
+    assert data["synthetic"] is True
+    points = {p["id"]: p for loc in data["locations"] for p in loc["points"]}
+    assert set(points) == {"RALO-01", "CANALETA-02", "BOMBA-01", "RALO-02", "RALO-03"}
+    assert points["RALO-01"]["reading"]["id"] == "LE-001"
+    assert points["RALO-01"]["inspection"]["obstruction"] is True
+    assert [e["id"] for e in points["RALO-01"]["open_events"]] == ["OC-001"]
+    assert points["CANALETA-02"]["open_events"] == []

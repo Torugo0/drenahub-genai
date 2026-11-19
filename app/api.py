@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from .assistant import ask
 from .models import AskRequest, AskResponse, Configuration
 from .ollama_client import OllamaClient
+from .operational import OperationalStore
 from .api_v2 import router as v2_router
 
 
@@ -61,6 +62,34 @@ async def ask_endpoint(request: AskRequest):
     if result.metadata.get("error"):
         return JSONResponse(status_code=503, content=result.model_dump(mode="json"))
     return result
+
+
+@app.get("/operational/overview")
+def operational_overview() -> dict[str, object]:
+    """Panorama somente leitura dos pontos para a central do operador."""
+    data = OperationalStore().data
+
+    def latest(rows: list[dict], point_id: str) -> dict | None:
+        matches = [row for row in rows if row["point_id"] == point_id]
+        return max(matches, key=lambda row: row["timestamp"]) if matches else None
+
+    locations = []
+    for location in data["locations"]:
+        points = []
+        for point in (p for p in data["points"] if p["location_id"] == location["id"]):
+            open_events = [e for e in data["events"] if e["point_id"] == point["id"] and e["status"] != "concluida"]
+            points.append({
+                "id": point["id"],
+                "name": point["name"],
+                "type": point["type"],
+                "alert_level_cm": point["alert_level_cm"],
+                "reading": latest(data["sensor_readings"], point["id"]),
+                "inspection": latest(data["visual_inspections"], point["id"]),
+                "maintenance": latest(data["maintenance_history"], point["id"]),
+                "open_events": open_events,
+            })
+        locations.append({**location, "points": points})
+    return {"synthetic": True, "reference_date": data["reference_date"], "locations": locations}
 
 
 @app.get("/evaluation/results")

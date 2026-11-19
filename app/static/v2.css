@@ -40,3 +40,16 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.045em;line-height:1.17}h1{font
 @media(max-width:720px){.agent-section{padding-top:54px}.agent-shell{grid-template-columns:1fr}.agent-intro{padding:27px 25px}.agent-symbol{margin-bottom:18px}.agent-intro h3{font-size:25px}.agent-intro ol{margin-top:18px;padding-top:16px;gap:9px}.agent-intro-note{margin-top:22px}.agent-form{padding:25px}.agent-result-placeholder,.agent-state{padding:19px}.agent-answer-panel{padding:19px}}
 @media(max-width:420px){.agent-form{padding:20px}.agent-answer-head{display:block}.agent-mode-tag{display:inline-block;margin-top:10px}.mode-options{gap:6px}.mode-option{padding:9px 7px;gap:6px}.agent-result-placeholder,.agent-state{align-items:start}.agent-answer-panel{padding:16px}}
 .agent-model_refusal_requires_review .agent-answer-kicker{color:#8b6c9e}.agent-model_refusal_requires_review .agent-review-warning{background:#f5f1fa;border-color:#e4d9ed;border-left-color:#9e7bb1;color:#6e5581}
+/* Mesma identidade da Central do operador (styles.css) */
+:root{--navy:#13343B;--navy-deep:#0E2A30;--navy-soft:#1D4750;--teal:#1C7C85;--ink:#13343B;--muted:#4A6168;--line:#C9CFCB;--bg:#E7E9E5;--soft:#D5E8E8;--shadow:none}
+body{font-family:"Segoe UI",system-ui,Arial,sans-serif}
+h1,h2,h3,.brand-text{font-family:"Bahnschrift","DIN Alternate","Arial Narrow",system-ui,sans-serif;letter-spacing:0}
+.topbar{height:56px}
+.brand-text{font-size:1.25rem;font-weight:600;color:#fff}
+.brand-mark{width:28px;height:28px;color:#9FD3D3}
+.topnav a{font-size:.92rem;text-transform:none;letter-spacing:0}
+.page-intro{padding:28px 0 8px;max-width:78ch}
+.page-intro h1{font-size:1.8rem;font-weight:600;margin:0 0 6px;color:var(--ink)}
+.page-intro p{margin:0;color:var(--muted);font-size:.95rem}
+.footer{display:none}
+.readiness{margin-top:20px !important;box-shadow:none}
