@@ -3,6 +3,5 @@ treino/dados/manifest.json text eol=lf
 treino/*.json text eol=lf
 treino/adapter/*.json text eol=lf
 *.safetensors binary
-treino/dados_central/*.jsonl text eol=lf
-treino/dados_central/*.json text eol=lf
 treino/adapter_central/*.json text eol=lf
+treino/dados_central/* -text
