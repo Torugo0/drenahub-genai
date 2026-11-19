@@ -1,0 +1,55 @@
+{
+  "question": "Que atividades fazem parte da manutenção de caixas de captação?",
+  "answer": "Manutenção de caixas de captação inclui retirar lixo de telas ou dispositivos de retenção e remover sedimentos acumulados. Também é importante registrar a data da limpeza e a quantidade de sedimento coletado para organizar a frequência futura de manutenção.",
+  "supported": true,
+  "refused": false,
+  "sources": [
+    {
+      "source_id": "EPA-OM-02",
+      "source_type": "document",
+      "title": "Stormwater Maintenance — US Environmental Protection Agency (EPA)",
+      "url": "https://www.epa.gov/npdes/stormwater-maintenance"
+    },
+    {
+      "source_id": "EPA-OM-03",
+      "source_type": "document",
+      "title": "Stormwater Maintenance — US Environmental Protection Agency (EPA)",
+      "url": "https://www.epa.gov/npdes/stormwater-maintenance"
+    }
+  ],
+  "reason": "Não há dados específicos sobre atividades de manutenção de caixas de captação.",
+  "suggested_actions": [
+    "Registrar a data da limpeza e a quantidade de sedimento coletado",
+    "Manter registros para organizar a frequência de manutenção",
+    "Treinar operadores apropriadamente"
+  ],
+  "draft_work_order": null,
+  "metadata": {
+    "configuration": "rag",
+    "model": "qwen2.5:3b-instruct",
+    "synthetic_operational_data": false,
+    "similarity_threshold": 0.6,
+    "retrieval": [
+      {
+        "chunk_id": "EPA-OM-02",
+        "score": 0.727817,
+        "rank": 1
+      },
+      {
+        "chunk_id": "EPA-OM-03",
+        "score": 0.659052,
+        "rank": 2
+      }
+    ],
+    "tools_called": [],
+    "tool_trace": [],
+    "tool_selection_method": "none",
+    "blocked_tool_names": [],
+    "raw_tool_plan": "",
+    "raw_model_output": "{\n  \"answer\": \"Manutenção de caixas de captação inclui retirar lixo de telas ou dispositivos de retenção e remover sedimentos acumulados. Também é importante registrar a data da limpeza e a quantidade de sedimento coletado para organizar a frequência futura de manutenção.\",\n  \"refused\": false,\n  \"source_ids\": [\"EPA-OM-02\", \"EPA-OM-03\"],\n  \"reason\": \"Não há dados específicos sobre atividades de manutenção de caixas de captação.\",\n  \"suggested_actions\": [\"Registrar a data da limpeza e a quantidade de sedimento coletado\", \"Manter registros para organizar a frequência de manutenção\", \"Treinar operadores apropriadamente\"]\n}",
+    "invalid_source_ids": [],
+    "invalid_operational_claims": [],
+    "model_latency_ms": 2147.78,
+    "latency_ms": 14016.29
+  }
+}

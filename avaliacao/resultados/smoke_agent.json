@@ -1,0 +1,177 @@
+{
+  "question": "Por que a Garagem A está com prioridade alta?",
+  "answer": "Garagem A está com prioridade alta devido ao nível de água acima do limite de 10 cm (LE-001) e obstrução na grelha (IV-001).",
+  "supported": true,
+  "refused": false,
+  "sources": [
+    {
+      "source_id": "OC-001",
+      "source_type": "operational_synthetic",
+      "title": "Registro sintético OC-001",
+      "url": null
+    },
+    {
+      "source_id": "LE-001",
+      "source_type": "operational_synthetic",
+      "title": "Registro sintético LE-001",
+      "url": null
+    },
+    {
+      "source_id": "IV-001",
+      "source_type": "operational_synthetic",
+      "title": "Registro sintético IV-001",
+      "url": null
+    }
+  ],
+  "reason": "Nível de água acima do limite e obstrução na grelha",
+  "suggested_actions": [
+    "Realizar limpeza na grelha",
+    "Verificar e ajustar a bomba",
+    "Monitorar o nível de água"
+  ],
+  "draft_work_order": null,
+  "metadata": {
+    "configuration": "agent",
+    "model": "qwen2.5:3b-instruct",
+    "synthetic_operational_data": true,
+    "similarity_threshold": 0.6,
+    "retrieval": [],
+    "tools_called": [
+      "get_recent_events",
+      "get_sensor_readings",
+      "get_visual_inspections"
+    ],
+    "tool_trace": [
+      {
+        "timestamp": "2026-11-19T16:59:54.820595+00:00",
+        "tool": "get_recent_events",
+        "arguments": {
+          "location_id": "GAR-A"
+        },
+        "result_ids": [
+          "OC-001",
+          "OC-004"
+        ],
+        "result_count": 2,
+        "result": [
+          {
+            "id": "OC-001",
+            "location_id": "GAR-A",
+            "point_id": "RALO-01",
+            "opened_at": "2026-11-18T17:45:00-03:00",
+            "status": "aguardando_manutencao",
+            "priority": "alta",
+            "priority_reason": "LE-001 acima do limite de 10 cm e IV-001 registra obstrucao",
+            "summary": "agua acima do alerta e residuos na grelha",
+            "evidence_ids": [
+              "LE-001",
+              "IV-001"
+            ]
+          },
+          {
+            "id": "OC-004",
+            "location_id": "GAR-A",
+            "point_id": "CANALETA-02",
+            "opened_at": "2026-11-16T11:00:00-03:00",
+            "status": "concluida",
+            "priority": "baixa",
+            "priority_reason": "LE-003 abaixo do limite e IV-002 sem obstrucao",
+            "summary": "verificacao preventiva concluida",
+            "evidence_ids": [
+              "LE-003",
+              "IV-002"
+            ]
+          }
+        ],
+        "elapsed_ms": 0.55
+      },
+      {
+        "timestamp": "2026-11-19T16:59:54.820595+00:00",
+        "tool": "get_sensor_readings",
+        "arguments": {
+          "location_id": "GAR-A"
+        },
+        "result_ids": [
+          "LE-004",
+          "LE-001",
+          "LE-002",
+          "LE-003"
+        ],
+        "result_count": 4,
+        "result": [
+          {
+            "id": "LE-004",
+            "point_id": "BOMBA-01",
+            "timestamp": "2026-11-18T17:32:00-03:00",
+            "water_level_cm": 6.2,
+            "pump_state": "ligada",
+            "status": "normal"
+          },
+          {
+            "id": "LE-001",
+            "point_id": "RALO-01",
+            "timestamp": "2026-11-18T17:30:00-03:00",
+            "water_level_cm": 11.2,
+            "status": "alerta"
+          },
+          {
+            "id": "LE-002",
+            "point_id": "RALO-01",
+            "timestamp": "2026-11-18T16:30:00-03:00",
+            "water_level_cm": 8.4,
+            "status": "normal"
+          },
+          {
+            "id": "LE-003",
+            "point_id": "CANALETA-02",
+            "timestamp": "2026-11-16T10:30:00-03:00",
+            "water_level_cm": 4.1,
+            "status": "normal"
+          }
+        ],
+        "elapsed_ms": 0.35
+      },
+      {
+        "timestamp": "2026-11-19T16:59:54.820595+00:00",
+        "tool": "get_visual_inspections",
+        "arguments": {
+          "location_id": "GAR-A"
+        },
+        "result_ids": [
+          "IV-001",
+          "IV-002"
+        ],
+        "result_count": 2,
+        "result": [
+          {
+            "id": "IV-001",
+            "point_id": "RALO-01",
+            "timestamp": "2026-11-18T17:40:00-03:00",
+            "finding": "residuos visiveis obstruindo parcialmente a grelha",
+            "obstruction": true,
+            "method": "DrenaVision: classificacao visual sintetica para demonstracao",
+            "reviewed_by_human": false
+          },
+          {
+            "id": "IV-002",
+            "point_id": "CANALETA-02",
+            "timestamp": "2026-11-16T10:00:00-03:00",
+            "finding": "sem obstrucao visivel",
+            "obstruction": false,
+            "method": "inspecao visual sintetica",
+            "reviewed_by_human": false
+          }
+        ],
+        "elapsed_ms": 0.32
+      }
+    ],
+    "tool_selection_method": "fallback_empty_plan+required_evidence",
+    "blocked_tool_names": [],
+    "raw_tool_plan": "{\"calls\":[]}",
+    "raw_model_output": "{\n  \"answer\": \"Garagem A está com prioridade alta devido ao nível de água acima do limite de 10 cm (LE-001) e obstrução na grelha (IV-001).\",\n  \"refused\": false,\n  \"source_ids\": [\"OC-001\", \"LE-001\", \"IV-001\"],\n  \"reason\": \"Nível de água acima do limite e obstrução na grelha\",\n  \"suggested_actions\": [\"Realizar limpeza na grelha\", \"Verificar e ajustar a bomba\", \"Monitorar o nível de água\"]\n}",
+    "invalid_source_ids": [],
+    "invalid_operational_claims": [],
+    "model_latency_ms": 2004.29,
+    "latency_ms": 14218.71
+  }
+}

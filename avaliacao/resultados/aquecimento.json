@@ -1,0 +1,5 @@
+{
+  "embedding_and_index_ms": 12101.09,
+  "ollama_warmup_ms": 423.38,
+  "raw_model_output": "{\"ok\": true}"
+}

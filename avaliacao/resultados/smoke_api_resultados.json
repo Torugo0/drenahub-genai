@@ -1,0 +1,38 @@
+{
+  "status_code": 200,
+  "body": {
+    "baseline": {
+      "n": 40,
+      "correct_pct": 17.5,
+      "unsupported_claim_detected_pct": 47.5,
+      "correct_refusal_pct": 100,
+      "json_valid_pct": 100,
+      "raw_json_valid_pct": 100,
+      "valid_citation_pct": 52.5,
+      "correct_tool_use_pct": null,
+      "mean_latency_ms": 1183.08
+    },
+    "rag": {
+      "n": 40,
+      "correct_pct": 40.0,
+      "unsupported_claim_detected_pct": 12.5,
+      "correct_refusal_pct": 100,
+      "json_valid_pct": 100,
+      "raw_json_valid_pct": 100,
+      "valid_citation_pct": 87.5,
+      "correct_tool_use_pct": null,
+      "mean_latency_ms": 1353.64
+    },
+    "agent": {
+      "n": 40,
+      "correct_pct": 57.5,
+      "unsupported_claim_detected_pct": 12.5,
+      "correct_refusal_pct": 100,
+      "json_valid_pct": 100,
+      "raw_json_valid_pct": 100,
+      "valid_citation_pct": 87.5,
+      "correct_tool_use_pct": 90.0,
+      "mean_latency_ms": 1688.11
+    }
+  }
+}

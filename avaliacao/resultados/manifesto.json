@@ -1,0 +1,21 @@
+{
+  "cases_sha256": "60519c5c303cd7069e73cccebaa89c21fbb6a59fed924aa79cea5eaa5b9e7ddc",
+  "chunks_sha256": "1a5d147017a93c58f5c1b836ad8d5ecaded5a1caed51afbb7bfbfbe0d551d57c",
+  "case_count": 40,
+  "dev_count": 20,
+  "final_count": 20,
+  "generated_utc": "2026-11-19T17:06:08.657153+00:00",
+  "runtime": {
+    "model": "qwen2.5:3b-instruct",
+    "ollama_base_url": "http://127.0.0.1:11434",
+    "generation_options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_predict": 512
+    },
+    "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "ollama_version": "0.40.16",
+    "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+    "model_size_bytes": 1929912432
+  }
+}

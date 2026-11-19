@@ -1,0 +1,20 @@
+{
+  "raw_sha256": "6f05c9ee214536955da05c7267fbd28f7d13899eaf892068bbe8105200fadde5",
+  "total": 120,
+  "by_configuration": {
+    "baseline": 40,
+    "rag": 40,
+    "agent": 40
+  },
+  "all_40_cases_have_3_configurations": true,
+  "model_names": [
+    "qwen2.5:3b-instruct"
+  ],
+  "model_digests": [
+    "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b"
+  ],
+  "thresholds": [
+    0.6
+  ],
+  "execution_errors": 0
+}

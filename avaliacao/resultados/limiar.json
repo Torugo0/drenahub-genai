@@ -1,0 +1,196 @@
+{
+  "method": "Fixed threshold grid; maximize (mean recall@3 + no-support rejection)/2 on development cases; ties use higher threshold. Final cases never select the threshold.",
+  "selected": {
+    "threshold": 0.6,
+    "supported_n": 10,
+    "unsupported_n": 1,
+    "mean_recall_at_1": 0.8,
+    "mean_recall_at_3": 0.95,
+    "unsupported_rejection_rate": 1,
+    "balanced_score": 0.975
+  },
+  "development_grid": [
+    {
+      "threshold": 0.0,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 0,
+      "balanced_score": 0.475
+    },
+    {
+      "threshold": 0.05,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 0,
+      "balanced_score": 0.475
+    },
+    {
+      "threshold": 0.1,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 0,
+      "balanced_score": 0.475
+    },
+    {
+      "threshold": 0.15,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 0,
+      "balanced_score": 0.475
+    },
+    {
+      "threshold": 0.2,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 0,
+      "balanced_score": 0.475
+    },
+    {
+      "threshold": 0.25,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 0,
+      "balanced_score": 0.475
+    },
+    {
+      "threshold": 0.3,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 0,
+      "balanced_score": 0.475
+    },
+    {
+      "threshold": 0.35,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 0,
+      "balanced_score": 0.475
+    },
+    {
+      "threshold": 0.4,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.975
+    },
+    {
+      "threshold": 0.45,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.975
+    },
+    {
+      "threshold": 0.5,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.975
+    },
+    {
+      "threshold": 0.55,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.975
+    },
+    {
+      "threshold": 0.6,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.95,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.975
+    },
+    {
+      "threshold": 0.65,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.8,
+      "mean_recall_at_3": 0.9,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.95
+    },
+    {
+      "threshold": 0.7,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.5,
+      "mean_recall_at_3": 0.5,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.75
+    },
+    {
+      "threshold": 0.75,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.4,
+      "mean_recall_at_3": 0.4,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.7
+    },
+    {
+      "threshold": 0.8,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.0,
+      "mean_recall_at_3": 0.0,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.5
+    },
+    {
+      "threshold": 0.85,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.0,
+      "mean_recall_at_3": 0.0,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.5
+    },
+    {
+      "threshold": 0.9,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.0,
+      "mean_recall_at_3": 0.0,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.5
+    },
+    {
+      "threshold": 0.95,
+      "supported_n": 10,
+      "unsupported_n": 1,
+      "mean_recall_at_1": 0.0,
+      "mean_recall_at_3": 0.0,
+      "unsupported_rejection_rate": 1,
+      "balanced_score": 0.5
+    }
+  ],
+  "cases_sha256": "60519c5c303cd7069e73cccebaa89c21fbb6a59fed924aa79cea5eaa5b9e7ddc",
+  "chunks_sha256": "1a5d147017a93c58f5c1b836ad8d5ecaded5a1caed51afbb7bfbfbe0d551d57c"
+}

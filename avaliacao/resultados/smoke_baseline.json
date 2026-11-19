@@ -1,0 +1,31 @@
+{
+  "question": "Como planejar inspeções preventivas de drenagem?",
+  "answer": "Planejar inspeções preventivas de drenagem envolve identificar pontos críticos, definir cronograma, preparar equipe e equipamentos adequados, e garantir que todos os procedimentos seguem protocolos de segurança.",
+  "supported": false,
+  "refused": false,
+  "sources": [],
+  "reason": "Resposta da LLM sem acesso a evidências externas.",
+  "suggested_actions": [
+    "Realizar inspeções regulares em pontos críticos da drenagem",
+    "Treinar equipe em identificação de problemas e procedimentos de manutenção",
+    "Manter registros de inspeções para monitoramento e melhoria contínua"
+  ],
+  "draft_work_order": null,
+  "metadata": {
+    "configuration": "baseline",
+    "model": "qwen2.5:3b-instruct",
+    "synthetic_operational_data": false,
+    "similarity_threshold": null,
+    "retrieval": [],
+    "tools_called": [],
+    "tool_trace": [],
+    "tool_selection_method": "none",
+    "blocked_tool_names": [],
+    "raw_tool_plan": "",
+    "raw_model_output": "{\n  \"answer\": \"Planejar inspeções preventivas de drenagem envolve identificar pontos críticos, definir cronograma, preparar equipe e equipamentos adequados, e garantir que todos os procedimentos seguem protocolos de segurança. \",\n  \"refused\": [],\n  \"source_ids\": [],\n  \"reason\": \"Não há dados específicos disponíveis para fornecer detalhes adicionais.\",\n  \"suggested_actions\": [\n    \"Realizar inspeções regulares em pontos críticos da drenagem\",\n    \"Treinar equipe em identificação de problemas e procedimentos de manutenção\",\n    \"Manter registros de inspeções para monitoramento e melhoria contínua\"\n  ]\n}",
+    "invalid_source_ids": [],
+    "invalid_operational_claims": [],
+    "model_latency_ms": 1870.89,
+    "latency_ms": 1871.12
+  }
+}

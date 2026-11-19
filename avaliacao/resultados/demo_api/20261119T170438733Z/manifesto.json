@@ -1,0 +1,77 @@
+{
+  "note": "Respostas HTTP reais da API local. Registros operacionais sintéticos. Nenhum arquivo do benchmark foi substituído.",
+  "records": [
+    {
+      "name": "00_health",
+      "timestamp_utc": "2026-11-19T17:04:38.7754357Z",
+      "method": "GET",
+      "url": "http://127.0.0.1:8001/health",
+      "request": {},
+      "http_status": 200,
+      "elapsed_ms": 123.25,
+      "response_file": "00_health.json",
+      "error": null
+    },
+    {
+      "name": "01_rag_documento",
+      "timestamp_utc": "2026-11-19T17:04:38.9096625Z",
+      "method": "POST",
+      "url": "http://127.0.0.1:8001/assistant/ask",
+      "request": {
+        "configuration": "rag",
+        "question": "O que deve constar no registro de inspeção de drenagem?"
+      },
+      "http_status": 200,
+      "elapsed_ms": 14485.24,
+      "response_file": "01_rag_documento.json",
+      "error": null
+    },
+    {
+      "name": "02_rag_recusa",
+      "timestamp_utc": "2026-11-19T17:04:53.3965341Z",
+      "method": "POST",
+      "url": "http://127.0.0.1:8001/assistant/ask",
+      "request": {
+        "configuration": "rag",
+        "question": "Qual foi a última leitura do sensor do RALO-01?"
+      },
+      "http_status": 200,
+      "elapsed_ms": 971.59,
+      "response_file": "02_rag_recusa.json",
+      "error": null
+    },
+    {
+      "name": "03_agent_prioridade",
+      "timestamp_utc": "2026-11-19T17:04:54.3699917Z",
+      "method": "POST",
+      "url": "http://127.0.0.1:8001/assistant/ask",
+      "request": {
+        "question": "Por que a garagem A está com prioridade alta?",
+        "location_id": "GAR-A",
+        "configuration": "agent"
+      },
+      "http_status": 200,
+      "elapsed_ms": 1740.91,
+      "response_file": "03_agent_prioridade.json",
+      "error": null
+    },
+    {
+      "name": "04_agent_pre_chamado",
+      "timestamp_utc": "2026-11-19T17:04:56.1128463Z",
+      "method": "POST",
+      "url": "http://127.0.0.1:8001/assistant/ask",
+      "request": {
+        "question": "Prepare um rascunho de ordem de serviço para a ocorrência OC-001.",
+        "point_id": "RALO-01",
+        "configuration": "agent"
+      },
+      "http_status": 200,
+      "elapsed_ms": 2345.31,
+      "response_file": "04_agent_pre_chamado.json",
+      "error": null
+    }
+  ],
+  "base_url": "http://127.0.0.1:8001",
+  "run_directory": "avaliacao/resultados/demo_api/20261119T170438733Z",
+  "generated_utc": "2026-11-19T17:04:58.4734478Z"
+}
