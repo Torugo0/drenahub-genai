@@ -212,3 +212,28 @@ def test_drenavision_contract_adapter_rejects_incomplete_event():
         pass
     else:
         raise AssertionError("Contrato incompleto foi aceito")
+
+
+class RecordingClient(FakeClient):
+    def __init__(self, outputs, model):
+        super().__init__(outputs)
+        self.model = model
+        self.calls = []
+
+    def generate_json(self, messages):
+        self.calls.append(messages)
+        return super().generate_json(messages)
+
+
+def test_trained_agent_plans_with_base_and_answers_with_trained_model(tmp_path, monkeypatch):
+    monkeypatch.setenv("DRENA_TOOL_LOG_PATH", str(tmp_path / "calls.jsonl"))
+    base = RecordingClient([json.dumps({"calls": [{"name": "get_sensor_readings", "arguments": {"point_id": "RALO-01"}}]})], "base")
+    trained = RecordingClient([json.dumps({"answer": "A última leitura do RALO-01 foi 11,2 cm.", "refused": False, "source_ids": ["LE-001"], "reason": "Leitura consultada.", "suggested_actions": []})], "treinado")
+    result = ask("Qual foi a última leitura do sensor no RALO-01?", "agent_trained", client=base, trained_client=trained, retriever=FakeRetriever(), store=OperationalStore())
+    assert result.refused is False
+    assert [s.source_id for s in result.sources] == ["LE-001"]
+    assert result.metadata["configuration"] == "agent_trained"
+    assert result.metadata["model"] == "treinado" and result.metadata["planner_model"] == "base"
+    assert len(base.calls) == 1 and len(trained.calls) == 1
+    # O modelo treinado recebe exatamente o prompt do agente, como no treino.
+    assert "Configuração: agent." in trained.calls[0][1]["content"]

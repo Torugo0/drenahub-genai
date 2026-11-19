@@ -160,6 +160,8 @@ textarea {
   background: #fff;
 }
 .modes small { display: block; font-family: var(--text); font-weight: 400; font-size: .74rem; color: var(--ink-soft); }
+.modes input:disabled + span { opacity: .45; cursor: not-allowed; }
+.trained-note { margin: 8px 0 0; font-size: .82rem; color: var(--ink-soft); }
 .modes input:checked + span { border-color: var(--ink); background: var(--ink); color: #fff; }
 .modes input:checked + span small { color: #C5D7D7; }
 .modes input:focus-visible + span { outline: 3px solid var(--alert); outline-offset: 2px; }

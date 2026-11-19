@@ -65,6 +65,7 @@
           <fieldset class="modes">
             <legend>Como a IA responde</legend>
             <label><input type="radio" name="configuration" value="agent" checked><span>Agente<small>documentos e registros</small></span></label>
+            <label id="trained-option"><input type="radio" name="configuration" value="agent_trained" disabled><span>Agente treinado<small>modelo com LoRA</small></span></label>
             <label><input type="radio" name="configuration" value="rag"><span>Só documentos<small>RAG</small></span></label>
             <label><input type="radio" name="configuration" value="baseline"><span>Sem contexto<small>para comparação</small></span></label>
           </fieldset>
@@ -73,6 +74,7 @@
             <button class="button-quiet" id="cancel-button" type="button" hidden>Cancelar</button>
           </div>
         </div>
+        <p class="trained-note" id="trained-note" hidden>O modo Agente treinado precisa do servidor do modelo treinado ligado (veja "Modelo treinado" no README).</p>
         <p class="request-status" id="request-status" role="status" aria-live="polite"></p>
       </form>
 
@@ -110,6 +112,11 @@
           <h2>Afirmações sem suporte detectadas pelo placar</h2>
           <div id="unsupported-bars" class="unsupported-bars"></div>
           <p class="method-note">Indicador automático. O modo sem contexto foi instruído a não citar fontes, e o placar marca como sem suporte toda resposta sem citação. Por isso a revisão humana acima é a medida de invenção.</p>
+        </section>
+        <section class="eval-block" id="trained-panel" hidden>
+          <h2>Agente base × agente treinado</h2>
+          <div class="audit-grid" id="trained-grid"></div>
+          <p class="method-note">Mesmas 40 perguntas e mesmas regras. O plano de ferramentas é igual; só a resposta final muda de modelo: Qwen2.5-3B base ou Qwen2.5-3B com o adaptador LoRA treinado pela equipe.</p>
         </section>
         <section class="eval-block" id="audit-panel" hidden>
           <h2>Teste final e recusas</h2>

@@ -1,0 +1,10 @@
+# Dependências do treino e do servidor do modelo treinado (GPU NVIDIA com CUDA).
+# Instale o PyTorch com CUDA primeiro:
+#   pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cu128
+transformers==4.57.1
+peft==0.17.1
+accelerate==1.11.0
+bitsandbytes==0.48.1
+safetensors
+numpy<3
+pydantic==2.11.10

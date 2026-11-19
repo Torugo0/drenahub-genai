@@ -1,0 +1,66 @@
+{
+  "agent": {
+    "n": 40,
+    "correct_pct": 57.5,
+    "unsupported_claim_detected_pct": 12.5,
+    "correct_refusal_pct": 100,
+    "json_valid_pct": 100,
+    "raw_json_valid_pct": 100,
+    "valid_citation_pct": 87.5,
+    "correct_tool_use_pct": 90.0,
+    "mean_latency_ms": 1688.11,
+    "final_correct": 10,
+    "final_n": 20
+  },
+  "agent_trained": {
+    "n": 40,
+    "correct_pct": 50.0,
+    "unsupported_claim_detected_pct": 10.0,
+    "correct_refusal_pct": 100,
+    "json_valid_pct": 100,
+    "raw_json_valid_pct": 100,
+    "valid_citation_pct": 90.0,
+    "correct_tool_use_pct": 87.5,
+    "mean_latency_ms": 16602.29,
+    "final_correct": 8,
+    "final_n": 20
+  },
+  "mudancas_por_caso": [
+    {
+      "case_id": "D05",
+      "agente": true,
+      "agente_treinado": false
+    },
+    {
+      "case_id": "D08",
+      "agente": true,
+      "agente_treinado": false
+    },
+    {
+      "case_id": "O02",
+      "agente": false,
+      "agente_treinado": true
+    },
+    {
+      "case_id": "O06",
+      "agente": false,
+      "agente_treinado": true
+    },
+    {
+      "case_id": "O07",
+      "agente": true,
+      "agente_treinado": false
+    },
+    {
+      "case_id": "O10",
+      "agente": true,
+      "agente_treinado": false
+    },
+    {
+      "case_id": "O14",
+      "agente": true,
+      "agente_treinado": false
+    }
+  ],
+  "errors": 0
+}

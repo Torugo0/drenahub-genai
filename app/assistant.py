@@ -49,6 +49,15 @@ TOOL_DESCRIPTIONS = {
 }
 
 
+def trained_model_client() -> OllamaClient:
+    """Cliente do modelo treinado (servidor treino/servidor_treinado.py, API igual à do Ollama)."""
+    return OllamaClient(
+        model=os.getenv("DRENA_TRAINED_MODEL", "drenaassist-treinado"),
+        base_url=os.getenv("DRENA_TRAINED_URL", "http://127.0.0.1:8766"),
+        timeout_s=float(os.getenv("DRENA_TRAINED_TIMEOUT_S", "180")),
+    )
+
+
 def _parse_json(raw: str) -> dict[str, Any]:
     parsed = json.loads(raw)
     if not isinstance(parsed, dict):
@@ -269,14 +278,20 @@ def ask(
     retriever: Any = None,
     store: OperationalStore | None = None,
     threshold: float | None = None,
+    trained_client: OllamaClient | None = None,
 ) -> AskResponse:
     """Executa a configuracao selecionada; nunca altera registros operacionais."""
     started = perf_counter()
-    config = Configuration(configuration)
+    requested = Configuration(configuration)
+    # O agente treinado faz o mesmo percurso do agente (busca, plano e ferramentas);
+    # só a resposta final é escrita pelo modelo com o adaptador LoRA.
+    trained = requested == Configuration.agent_trained
+    config = Configuration.agent if trained else requested
     question = question.strip()
     if len(question) < 3:
         raise ValueError("Pergunta deve ter ao menos 3 caracteres")
     client = client or OllamaClient()
+    answer_client = (trained_client or trained_model_client()) if trained else client
     document_context: list[dict[str, Any]] = []
     operational_context: list[dict[str, Any]] = []
     sources: dict[str, EvidenceSource] = {}
@@ -316,7 +331,7 @@ def ask(
                 "Para pedido de rascunho de ordem de serviço, resuma a ocorrência e sugira checklist; o sistema montará o rascunho sem mudar status."
             )
             system_prompt = SYSTEM_PROMPT
-        raw_answer, answer_latency = client.generate_json([{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}])
+        raw_answer, answer_latency = answer_client.generate_json([{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}])
         model_latency_ms += answer_latency
         parsed = _parse_json(raw_answer)
         answer = str(parsed.get("answer", "")).strip()
@@ -368,8 +383,9 @@ def ask(
             suggested_actions=actions if not refused else [],
             draft_work_order=draft,
             metadata={
-                "configuration": config.value,
-                "model": client.model,
+                "configuration": requested.value,
+                "model": answer_client.model,
+                "planner_model": client.model if config == Configuration.agent else None,
                 "synthetic_operational_data": config == Configuration.agent,
                 "similarity_threshold": (threshold if threshold is not None else float(os.getenv("DRENA_SIMILARITY_THRESHOLD", str(DEFAULT_THRESHOLD)))) if config != Configuration.baseline else None,
                 "retrieval": [{"chunk_id": item.chunk.chunk_id, "score": round(item.score, 6), "rank": item.rank} for item in retrieved],
@@ -395,8 +411,8 @@ def ask(
             refused=True,
             reason=f"Erro de execução: {type(exc).__name__}",
             metadata={
-                "configuration": config.value,
-                "model": client.model,
+                "configuration": requested.value,
+                "model": answer_client.model,
                 "error": type(exc).__name__,
                 "raw_tool_plan": raw_plan,
                 "raw_model_output": raw_answer,

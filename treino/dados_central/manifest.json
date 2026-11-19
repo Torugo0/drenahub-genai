@@ -1,0 +1,84 @@
+{
+  "dataset_version": "drenaassist-central-1",
+  "task": "resposta final da central (configurações rag e agent) a partir das evidências capturadas do pipeline",
+  "generator": "regras determinísticas, sem LLM",
+  "counts": {
+    "train": 98,
+    "dev": 34
+  },
+  "families": {
+    "train": [
+      "documento",
+      "fila",
+      "fora_da_base",
+      "inducao",
+      "leitura",
+      "manutencao",
+      "manutencao_ocorrencia",
+      "obstrucao",
+      "ordem_servico",
+      "prioridade",
+      "rag_operacional",
+      "resumo",
+      "sem_registro",
+      "variacao"
+    ],
+    "dev": [
+      "documento",
+      "fila",
+      "fora_da_base",
+      "inducao",
+      "leitura",
+      "manutencao",
+      "obstrucao",
+      "ordem_servico",
+      "prioridade",
+      "rag_operacional",
+      "resumo",
+      "sem_registro",
+      "variacao"
+    ]
+  },
+  "training_store": "operacional_treino.json",
+  "document_chunks_used": [
+    "EPA-CB-01",
+    "EPA-CHECK-02",
+    "EPA-CHECK-03",
+    "EPA-LIFT-03",
+    "EPA-LIFT-05",
+    "EPA-PM-01",
+    "EPA-PM-02",
+    "EPA-PM-03",
+    "EPA-SWPPP-01",
+    "EPA-SWPPP-04",
+    "NWS-BEFORE-01",
+    "NWS-BEFORE-02",
+    "NWS-DURING-01",
+    "OSHA-FLOOD-02",
+    "OSHA-FLOOD-04"
+  ],
+  "evaluated_chunks_excluded": 40,
+  "skipped": [
+    "Para que serve uma caixa de captação? (evidência ausente: EPA-CB-01)",
+    "Por que limpar caixas de captação periodicamente? (evidência ausente: EPA-CB-01)",
+    "O que é manutenção preventiva em drenagem? (evidência ausente: EPA-PM-01)",
+    "Quais sistemas o programa de manutenção preventiva deve listar? (evidência ausente: EPA-PM-03)",
+    "Por que incluir bombas e tubulações no programa preventivo? (evidência ausente: EPA-PM-03)",
+    "O que verificar nas linhas de sucção e recalque de uma estação elevatória? (evidência ausente: EPA-LIFT-03)",
+    "Quais itens do painel e do bombeamento a ficha manda conferir? (evidência ausente: EPA-LIFT-03)",
+    "Como planejar peças sobressalentes para bombas? (evidência ausente: EPA-LIFT-05)",
+    "O que considerar ao escolher peças de reserva para bombas? (evidência ausente: EPA-LIFT-05)",
+    "O que fazer ao encontrar linhas elétricas caídas após alagamento? (evidência ausente: OSHA-FLOOD-02)",
+    "Que cuidados de higiene ter na limpeza após alagamento? (evidência ausente: OSHA-FLOOD-04)",
+    "Como se preparar para cheias repentinas? (evidência ausente: NWS-BEFORE-01)",
+    "Que plano preparar antes de uma enchente? (evidência ausente: NWS-BEFORE-02)",
+    "O que fazer durante uma inundação? (evidência ausente: NWS-DURING-01)",
+    "O que registrar sobre canais e valas no checklist? (evidência ausente: EPA-CHECK-03)",
+    "Que problemas de canais e valas devem ser anotados? (evidência ausente: EPA-CHECK-03)"
+  ],
+  "sha256": {
+    "train.jsonl": "e5074fed89da8585aa834ecba2af05db95e47e4dcaabf3da97368f0e10cded98",
+    "dev.jsonl": "b9a7946e177d1dc13eb1c1f058910f3d5dcda368b42959277a4deb28d89a569b",
+    "operacional_treino.json": "e9c89fef549c1282797ea6c2cd7c0857429eca710c6e199db32f451108a459d0"
+  }
+}

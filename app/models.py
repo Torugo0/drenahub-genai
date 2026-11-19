@@ -10,6 +10,7 @@ class Configuration(str, Enum):
     baseline = "baseline"
     rag = "rag"
     agent = "agent"
+    agent_trained = "agent_trained"
 
 
 class AskRequest(BaseModel):

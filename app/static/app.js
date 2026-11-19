@@ -16,7 +16,7 @@
   const feedList = $("#answer-content");
 
   const GAUGE_MAX_CM = 20;
-  const modeNames = { agent: "Agente", rag: "Só documentos", baseline: "Sem contexto" };
+  const modeNames = { agent: "Agente", agent_trained: "Agente treinado", rag: "Só documentos", baseline: "Sem contexto" };
   const accents = {
     "Galpao Norte": "Galpão Norte",
     "Condominio Ipe": "Condomínio Ipê",
@@ -90,6 +90,10 @@
       dot.classList.toggle("is-ready", Boolean(health.ollama_model_available));
       dot.classList.toggle("is-unavailable", !health.ollama_model_available);
       label.textContent = health.ollama_model_available ? "Modelo local ativo" : "Modelo local desligado. Inicie o Ollama";
+      const trainedInput = form.querySelector('input[value="agent_trained"]');
+      trainedInput.disabled = !health.trained_model_available;
+      $("#trained-note").hidden = Boolean(health.trained_model_available);
+      if (trainedInput.disabled && trainedInput.checked) form.elements.configuration.value = "agent";
     } catch {
       dot.classList.add("is-unavailable");
       label.textContent = "API sem resposta";
@@ -218,7 +222,7 @@
     if (pointSelect.value === pointId) { resetContext(); return; }
     locationSelect.value = point.location.id;
     fillPoints(point.id);
-    form.elements.configuration.value = "agent";
+    if (form.elements.configuration.value !== "agent_trained") form.elements.configuration.value = "agent";
     syncSelection();
     question.focus();
   }
@@ -396,7 +400,7 @@
     }
     const mode = form.elements.configuration.value;
     const payload = { question: text, configuration: mode };
-    if (mode === "agent") {
+    if (mode === "agent" || mode === "agent_trained") {
       if (locationSelect.value) payload.location_id = locationSelect.value;
       if (pointSelect.value) payload.point_id = pointSelect.value;
     }
@@ -406,7 +410,9 @@
     askButton.disabled = true;
     cancelButton.hidden = false;
     feed.setAttribute("aria-busy", "true");
-    requestStatus.textContent = "Consultando o modelo local. A primeira pergunta pode levar até 20 s.";
+    requestStatus.textContent = mode === "agent_trained"
+      ? "Consultando o modelo treinado. Ele roda em 4 bits e leva de 20 a 40 s por resposta."
+      : "Consultando o modelo local. A primeira pergunta pode levar até 20 s.";
     try {
       const response = await fetch("/assistant/ask", {
         method: "POST",
@@ -516,6 +522,34 @@
     }
   }
 
+  async function loadTrained() {
+    try {
+      const board = await fetchJson("/evaluation/trained", 8000);
+      if (!board.agent || !board.agent_trained) return;
+      const grid = $("#trained-grid");
+      const names = { agent: "Agente (modelo base)", agent_trained: "Agente treinado (LoRA)" };
+      for (const id of ["agent", "agent_trained"]) {
+        const box = node("section", "audit-card");
+        box.append(node("h3", "", names[id]));
+        const rows = [
+          ["Corretas", `${percent.format(board[id].correct_pct)}%`],
+          ["Teste final", `${board[id].final_correct}/${board[id].final_n}`],
+          ["Citações válidas", `${percent.format(board[id].valid_citation_pct)}%`],
+          ["Tempo médio", `${decimal.format(board[id].mean_latency_ms / 1000)} s`]
+        ];
+        for (const [label, value] of rows) {
+          const row = node("div", "audit-row");
+          row.append(node("span", "", label), node("strong", "", value));
+          box.append(row);
+        }
+        grid.append(box);
+      }
+      $("#trained-panel").hidden = false;
+    } catch {
+      // Sem avaliação do modelo treinado, o restante do placar continua visível.
+    }
+  }
+
   /* Navegação entre central e avaliação */
   function showView() {
     const view = location.hash === "#avaliacao" ? "avaliacao" : "consulta";
@@ -543,4 +577,5 @@
   loadOverview();
   loadEvaluation();
   loadAudit();
+  loadTrained();
 })();

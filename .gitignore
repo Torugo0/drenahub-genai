@@ -14,5 +14,6 @@ models/
 *.gguf
 *.safetensors
 !treino/adapter/adapter_model.safetensors
+!treino/adapter_central/adapter_model.safetensors
 base/index.npz
 .claude/

@@ -1,0 +1,1167 @@
+[
+  {
+    "case_id": "D01",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": false,
+    "required_facts_missed": [
+      "responsaveis",
+      "cronograma|calendario",
+      "inspec",
+      "limpeza|sedimentos|detritos"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [],
+    "tools_called": [
+      "get_maintenance_history"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 34152.99,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "D02",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": false,
+    "unsupported_claim_detected": true,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "trein"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [
+      "EPA-OM-03"
+    ],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-OM-02",
+      "EPA-OM-03"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 24464.53,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "D03",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-OM-03"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 17806.03,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "D04",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-OM-04"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 15619.73,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "D05",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "interior|dentro|interna",
+      "detrito|sedimento"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-CB-02"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 12249.7,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "D06",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "acumulo|observ"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-CB-03"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 14550.65,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "D07",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-CB-04"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 19087.39,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "D08",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": false,
+    "unsupported_claim_detected": true,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "contamin",
+      "destin|descarte"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [
+      "EPA-CB-01"
+    ],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-CB-01"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 17002.92,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "D09",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-PM-05"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 16379.24,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "D10",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": false,
+    "unsupported_claim_detected": true,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "corrig|repar",
+      "funcion"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [
+      "EPA-SWPPP-02"
+    ],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-SWPPP-02",
+      "EPA-SWPPP-03"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 16266.7,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "D11",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-SWPPP-02"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 19643.35,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "D12",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-SWPPP-05"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 16485.79,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "D13",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-LIFT-02"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 15959.42,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "D14",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "esgoto|porte|depende"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "EPA-LIFT-04"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 13803.46,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "D15",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "nao entrar|afast|nao tocar"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "OSHA-FLOOD-01"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 16154.42,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "D16",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "ar livre|extern",
+      "confinad",
+      "monoxido"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 7464.73,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "D17",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "OSHA-FLOOD-05"
+    ],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 14214.11,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "D18",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "funcion",
+      "reserva|backup",
+      "disjuntor"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 13044.01,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "D19",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "fio|eletric",
+      "objeto|quimic|dano"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 14778.93,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "D20",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": false,
+    "required_facts_missed": [
+      "data",
+      "inspetor|responsavel",
+      "local",
+      "grelha|entrada",
+      "deposito|sedimento"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [
+      [
+        "EPA-CHECK-01"
+      ],
+      [
+        "EPA-CHECK-04"
+      ]
+    ],
+    "cited_source_ids": [],
+    "tools_called": [
+      "get_visual_inspections"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 11428.46,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "O01",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "11[.,]2"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "OC-001",
+      "LE-001",
+      "IV-001"
+    ],
+    "tools_called": [
+      "get_recent_events",
+      "get_sensor_readings",
+      "get_visual_inspections"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 24104.84,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "O02",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "LE-001"
+    ],
+    "tools_called": [
+      "get_sensor_readings"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 19481.26,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "O03",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "IV-001"
+    ],
+    "tools_called": [
+      "get_visual_inspections"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 18253.54,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "O04",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "OC-001"
+    ],
+    "tools_called": [
+      "get_maintenance_queue"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 14225.77,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "O05",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "OC-001",
+      "LE-001",
+      "IV-001"
+    ],
+    "tools_called": [
+      "get_event",
+      "get_sensor_readings",
+      "get_visual_inspections",
+      "get_recent_events"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 26959.99,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "O06",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "LE-004"
+    ],
+    "tools_called": [
+      "get_sensor_readings"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 16847.06,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "O07",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "limpeza",
+      "grelha",
+      "escoamento"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "MAN-001"
+    ],
+    "tools_called": [
+      "get_maintenance_history"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 17057.03,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "O08",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "folha",
+      "3[.,]0|3\\s*cm",
+      "10\\s*cm"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "OC-002",
+      "IV-003",
+      "LE-005"
+    ],
+    "tools_called": [
+      "get_recent_events",
+      "get_sensor_readings",
+      "get_visual_inspections"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 20849.94,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "O09",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "10\\s*cm"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "OC-003",
+      "LE-006",
+      "IV-004"
+    ],
+    "tools_called": [
+      "get_recent_events",
+      "get_sensor_readings",
+      "get_visual_inspections",
+      "get_visual_inspections",
+      "get_maintenance_queue"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 22470.91,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "O10",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": false,
+    "unsupported_claim_detected": true,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "OC-004",
+      "conclu"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [
+      [
+        "OC-004"
+      ]
+    ],
+    "cited_source_ids": [
+      "OC-001"
+    ],
+    "tools_called": [
+      "get_recent_events"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 24878.19,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "O11",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "OC-001",
+      "OC-002"
+    ],
+    "tools_called": [
+      "get_maintenance_queue"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 16640.27,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "O12",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "obstr"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "IV-003"
+    ],
+    "tools_called": [
+      "get_visual_inspections"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 18440.4,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "O13",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": true,
+    "expected_refusal": true,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [],
+    "tools_called": [
+      "get_maintenance_history"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 9122.18,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "O14",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [
+      "8[.,]4",
+      "11[.,]2",
+      "2[.,]8|subiu|aument"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [
+      [
+        "LE-001"
+      ],
+      [
+        "LE-002"
+      ]
+    ],
+    "cited_source_ids": [],
+    "tools_called": [
+      "get_sensor_readings"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 19414.53,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "O15",
+    "configuration": "agent_trained",
+    "correct": false,
+    "refusal_correct": false,
+    "expected_refusal": false,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": false,
+    "required_facts_missed": [
+      "sedimento",
+      "inspec|retirada"
+    ],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [
+      "OC-004"
+    ],
+    "tools_called": [
+      "get_event"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 19006.92,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "N01",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": true,
+    "expected_refusal": true,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": false,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [],
+    "tools_called": [
+      "get_sensor_readings",
+      "get_visual_inspections",
+      "get_recent_events"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 9143.62,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "N02",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": true,
+    "expected_refusal": true,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [],
+    "tools_called": [
+      "get_sensor_readings"
+    ],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 10917.31,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "N03",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": true,
+    "expected_refusal": true,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": false,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 9116.42,
+    "split": "dev",
+    "execution_error": null
+  },
+  {
+    "case_id": "N04",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": true,
+    "expected_refusal": true,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 8098.29,
+    "split": "final",
+    "execution_error": null
+  },
+  {
+    "case_id": "N05",
+    "configuration": "agent_trained",
+    "correct": true,
+    "refusal_correct": true,
+    "expected_refusal": true,
+    "json_valid": true,
+    "raw_json_valid": true,
+    "citation_valid": true,
+    "unsupported_claim_detected": false,
+    "tool_use_correct": true,
+    "required_facts_missed": [],
+    "forbidden_claims_found": [],
+    "invalid_source_ids": [],
+    "unconsulted_source_ids": [],
+    "missing_source_groups": [],
+    "cited_source_ids": [],
+    "tools_called": [],
+    "missing_tool_groups": [],
+    "needs_human_review": false,
+    "latency_ms": 8506.63,
+    "split": "final",
+    "execution_error": null
+  }
+]

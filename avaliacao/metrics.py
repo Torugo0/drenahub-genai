@@ -96,7 +96,7 @@ def score_answer(case: Mapping[str, Any], response: Mapping[str, Any], configura
     missed_tool_groups = [group for group in case.get("required_tool_groups", [])
                           if not set(group) & set(tools)]
     tool_use_correct: bool | None = None
-    if configuration == "agent":
+    if configuration in ("agent", "agent_trained"):
         tool_use_correct = required_tools <= set(tools) and set(tools) <= allowed_tools and not missed_tool_groups
 
     raw = (response.get("metadata") or {}).get("raw_model_output")

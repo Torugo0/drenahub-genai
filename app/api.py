@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from .assistant import ask
+from .assistant import ask, trained_model_client
 from .models import AskRequest, AskResponse, Configuration
 from .ollama_client import OllamaClient
 from .operational import OperationalStore
@@ -20,6 +20,7 @@ from .api_v2 import router as v2_router
 ROOT = Path(__file__).resolve().parents[1]
 SCOREBOARD_PATH = ROOT / "avaliacao" / "resultados" / "placar.json"
 AUDIT_PATH = ROOT / "avaliacao" / "resultados" / "auditoria_semantica.json"
+TRAINED_SCOREBOARD_PATH = ROOT / "avaliacao" / "treinado" / "placar.json"
 STATIC_PATH = ROOT / "app" / "static"
 app = FastAPI(title="DrenaAssist", version="0.1.0", description="Assistente local para operacoes e manutencao de drenagem")
 origins = [item.strip() for item in os.getenv("DRENA_CORS_ORIGINS", "http://localhost:5173,http://localhost:3000").split(",") if item.strip()]
@@ -41,7 +42,15 @@ def v2_console() -> FileResponse:
 @app.get("/health")
 def health() -> dict[str, object]:
     client = OllamaClient()
-    return {"status": "ok", "ollama_model_available": client.available(), "model": client.model, "operational_data": "synthetic"}
+    trained = trained_model_client()
+    return {
+        "status": "ok",
+        "ollama_model_available": client.available(),
+        "model": client.model,
+        "trained_model_available": trained.available(),
+        "trained_model": trained.model,
+        "operational_data": "synthetic",
+    }
 
 
 @app.get("/assistant/configurations")
@@ -52,6 +61,7 @@ def configurations() -> dict[str, object]:
             {"id": Configuration.baseline.value, "description": "LLM local sem documentos ou ferramentas"},
             {"id": Configuration.rag.value, "description": "LLM local com documentos recuperados por embeddings"},
             {"id": Configuration.agent.value, "description": "Mesma LLM com documentos e ferramentas de consulta operacional"},
+            {"id": Configuration.agent_trained.value, "description": "Mesmo percurso do agente; a resposta final vem do Qwen2.5-3B com o adaptador LoRA treinado"},
         ],
     }
 
@@ -104,3 +114,10 @@ def evaluation_audit() -> dict[str, object]:
     if not AUDIT_PATH.exists():
         raise HTTPException(status_code=404, detail="Auditoria ainda não executada")
     return json.loads(AUDIT_PATH.read_text(encoding="utf-8"))
+
+
+@app.get("/evaluation/trained")
+def evaluation_trained() -> dict[str, object]:
+    if not TRAINED_SCOREBOARD_PATH.exists():
+        raise HTTPException(status_code=404, detail="Modelo treinado ainda não avaliado")
+    return json.loads(TRAINED_SCOREBOARD_PATH.read_text(encoding="utf-8"))

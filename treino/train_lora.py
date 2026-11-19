@@ -117,6 +117,9 @@ def main() -> None:
     parser.add_argument("--model-path", default=MODEL_ID, help="Checkpoint HF local ou ID oficial")
     parser.add_argument("--max-length", type=int, default=768)
     parser.add_argument("--epochs", type=float, default=2.0)
+    parser.add_argument("--model-id", default=MODEL_ID, help="ID do modelo base registrado no manifesto")
+    parser.add_argument("--model-revision", default=MODEL_REVISION, help="Revisão fixa do modelo base")
+    parser.add_argument("--license", default="Apache-2.0", help="Licença do modelo base registrada no manifesto")
     args = parser.parse_args()
     if args.max_length < 128 or args.epochs <= 0 or not math.isfinite(args.epochs):
         parser.error("max-length ou epochs inválido")
@@ -136,7 +139,8 @@ def main() -> None:
     args.output.mkdir(parents=True, exist_ok=True)
     started = time.monotonic()
     compute_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
-    tokenizer = AutoTokenizer.from_pretrained(args.model_path, revision=MODEL_REVISION, trust_remote_code=False)
+    revision = None if Path(args.model_path).exists() else args.model_revision
+    tokenizer = AutoTokenizer.from_pretrained(args.model_path, revision=revision, trust_remote_code=False)
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
     train_dataset = _TokenizedExamples(train_rows, tokenizer, args.max_length)
@@ -149,7 +153,7 @@ def main() -> None:
     )
     model = AutoModelForCausalLM.from_pretrained(
         args.model_path,
-        revision=MODEL_REVISION,
+        revision=revision,
         quantization_config=quantization,
         device_map={"": 0},
         torch_dtype=compute_dtype,
@@ -200,10 +204,10 @@ def main() -> None:
     trainer.save_model(str(args.output / "adapter"))
     tokenizer.save_pretrained(str(args.output / "adapter"))
     manifest = {
-        "model_id": MODEL_ID,
-        "model_revision": MODEL_REVISION,
+        "model_id": args.model_id,
+        "model_revision": args.model_revision,
         "model_path_used": args.model_path,
-        "license": "Apache-2.0",
+        "license": args.license,
         "method": "QLoRA NF4, r=8, alpha=16, q/k/v/o projections",
         "train_examples": len(train_rows),
         "dev_examples": len(dev_rows),

@@ -1,0 +1,448 @@
+{
+  "dataset_id": "drenahub-treino-v1",
+  "synthetic": true,
+  "reference_date": "2026-11-10",
+  "description": "Registros fictícios usados só no treino; não se sobrepõem à base avaliada.",
+  "priority_rules": [
+    {
+      "priority": "alta",
+      "condition": "nivel de agua acima do limite de alerta e obstrucao visual registrada no mesmo ponto"
+    },
+    {
+      "priority": "media",
+      "condition": "nivel de agua acima do limite de alerta ou obstrucao visual registrada"
+    },
+    {
+      "priority": "baixa",
+      "condition": "nenhuma das duas condicoes anteriores"
+    }
+  ],
+  "locations": [
+    {
+      "id": "GAR-C",
+      "name": "Garagem C",
+      "type": "garagem",
+      "unit": "Condominio Aroeira"
+    },
+    {
+      "id": "GAR-D",
+      "name": "Garagem D",
+      "type": "garagem",
+      "unit": "Condominio Aroeira"
+    },
+    {
+      "id": "DOC-1",
+      "name": "Doca Sul",
+      "type": "doca",
+      "unit": "Centro de Distribuicao Leste"
+    }
+  ],
+  "points": [
+    {
+      "id": "RALO-11",
+      "location_id": "GAR-C",
+      "name": "Ralo 11",
+      "type": "ralo",
+      "alert_level_cm": 10.0,
+      "external_ids": []
+    },
+    {
+      "id": "RALO-12",
+      "location_id": "GAR-C",
+      "name": "Ralo 12",
+      "type": "ralo",
+      "alert_level_cm": 10.0,
+      "external_ids": []
+    },
+    {
+      "id": "CANALETA-13",
+      "location_id": "GAR-C",
+      "name": "Canaleta 13",
+      "type": "canaleta",
+      "alert_level_cm": 10.0,
+      "external_ids": []
+    },
+    {
+      "id": "BOMBA-14",
+      "location_id": "GAR-C",
+      "name": "Bomba 14",
+      "type": "bomba",
+      "alert_level_cm": 10.0,
+      "external_ids": []
+    },
+    {
+      "id": "RALO-21",
+      "location_id": "GAR-D",
+      "name": "Ralo 21",
+      "type": "ralo",
+      "alert_level_cm": 10.0,
+      "external_ids": []
+    },
+    {
+      "id": "RALO-22",
+      "location_id": "GAR-D",
+      "name": "Ralo 22",
+      "type": "ralo",
+      "alert_level_cm": 10.0,
+      "external_ids": []
+    },
+    {
+      "id": "CANALETA-23",
+      "location_id": "GAR-D",
+      "name": "Canaleta 23",
+      "type": "canaleta",
+      "alert_level_cm": 10.0,
+      "external_ids": []
+    },
+    {
+      "id": "RALO-31",
+      "location_id": "DOC-1",
+      "name": "Ralo 31",
+      "type": "ralo",
+      "alert_level_cm": 10.0,
+      "external_ids": []
+    },
+    {
+      "id": "CANALETA-32",
+      "location_id": "DOC-1",
+      "name": "Canaleta 32",
+      "type": "canaleta",
+      "alert_level_cm": 10.0,
+      "external_ids": []
+    },
+    {
+      "id": "BOMBA-33",
+      "location_id": "DOC-1",
+      "name": "Bomba 33",
+      "type": "bomba",
+      "alert_level_cm": 10.0,
+      "external_ids": []
+    }
+  ],
+  "sensor_readings": [
+    {
+      "id": "LE-101",
+      "point_id": "RALO-11",
+      "timestamp": "2026-11-09T18:10:00-03:00",
+      "water_level_cm": 13.6,
+      "status": "alerta"
+    },
+    {
+      "id": "LE-102",
+      "point_id": "RALO-11",
+      "timestamp": "2026-11-09T17:10:00-03:00",
+      "water_level_cm": 9.1,
+      "status": "normal"
+    },
+    {
+      "id": "LE-103",
+      "point_id": "RALO-12",
+      "timestamp": "2026-11-09T18:15:00-03:00",
+      "water_level_cm": 5.2,
+      "status": "normal"
+    },
+    {
+      "id": "LE-104",
+      "point_id": "RALO-12",
+      "timestamp": "2026-11-09T17:15:00-03:00",
+      "water_level_cm": 4.8,
+      "status": "normal"
+    },
+    {
+      "id": "LE-105",
+      "point_id": "CANALETA-13",
+      "timestamp": "2026-11-08T11:00:00-03:00",
+      "water_level_cm": 10.9,
+      "status": "alerta"
+    },
+    {
+      "id": "LE-106",
+      "point_id": "CANALETA-13",
+      "timestamp": "2026-11-08T10:00:00-03:00",
+      "water_level_cm": 7.5,
+      "status": "normal"
+    },
+    {
+      "id": "LE-107",
+      "point_id": "BOMBA-14",
+      "timestamp": "2026-11-09T18:20:00-03:00",
+      "water_level_cm": 7.9,
+      "pump_state": "ligada",
+      "status": "normal"
+    },
+    {
+      "id": "LE-108",
+      "point_id": "BOMBA-14",
+      "timestamp": "2026-11-09T17:20:00-03:00",
+      "water_level_cm": 8.6,
+      "pump_state": "ligada",
+      "status": "normal"
+    },
+    {
+      "id": "LE-109",
+      "point_id": "RALO-21",
+      "timestamp": "2026-11-07T08:30:00-03:00",
+      "water_level_cm": 2.4,
+      "status": "normal"
+    },
+    {
+      "id": "LE-110",
+      "point_id": "RALO-21",
+      "timestamp": "2026-11-07T07:30:00-03:00",
+      "water_level_cm": 3.1,
+      "status": "normal"
+    },
+    {
+      "id": "LE-111",
+      "point_id": "RALO-22",
+      "timestamp": "2026-11-09T19:00:00-03:00",
+      "water_level_cm": 15.3,
+      "status": "alerta"
+    },
+    {
+      "id": "LE-112",
+      "point_id": "RALO-22",
+      "timestamp": "2026-11-09T18:00:00-03:00",
+      "water_level_cm": 11.7,
+      "status": "alerta"
+    },
+    {
+      "id": "LE-113",
+      "point_id": "CANALETA-23",
+      "timestamp": "2026-11-06T14:00:00-03:00",
+      "water_level_cm": 3.9,
+      "status": "normal"
+    },
+    {
+      "id": "LE-114",
+      "point_id": "CANALETA-23",
+      "timestamp": "2026-11-06T13:00:00-03:00",
+      "water_level_cm": 3.5,
+      "status": "normal"
+    },
+    {
+      "id": "LE-115",
+      "point_id": "RALO-31",
+      "timestamp": "2026-11-09T16:40:00-03:00",
+      "water_level_cm": 12.2,
+      "status": "alerta"
+    },
+    {
+      "id": "LE-116",
+      "point_id": "RALO-31",
+      "timestamp": "2026-11-09T15:40:00-03:00",
+      "water_level_cm": 6.0,
+      "status": "normal"
+    },
+    {
+      "id": "LE-117",
+      "point_id": "CANALETA-32",
+      "timestamp": "2026-11-09T16:45:00-03:00",
+      "water_level_cm": 4.4,
+      "status": "normal"
+    },
+    {
+      "id": "LE-118",
+      "point_id": "CANALETA-32",
+      "timestamp": "2026-11-09T15:45:00-03:00",
+      "water_level_cm": 5.0,
+      "status": "normal"
+    },
+    {
+      "id": "LE-119",
+      "point_id": "BOMBA-33",
+      "timestamp": "2026-11-09T16:50:00-03:00",
+      "water_level_cm": 9.4,
+      "pump_state": "desligada",
+      "status": "normal"
+    },
+    {
+      "id": "LE-120",
+      "point_id": "BOMBA-33",
+      "timestamp": "2026-11-09T15:50:00-03:00",
+      "water_level_cm": 7.2,
+      "pump_state": "desligada",
+      "status": "normal"
+    }
+  ],
+  "visual_inspections": [
+    {
+      "id": "IV-101",
+      "point_id": "RALO-11",
+      "timestamp": "2026-11-09T18:25:00-03:00",
+      "finding": "sedimento e plástico cobrindo metade da grelha",
+      "obstruction": true,
+      "method": "inspecao visual sintetica",
+      "reviewed_by_human": false
+    },
+    {
+      "id": "IV-102",
+      "point_id": "RALO-12",
+      "timestamp": "2026-11-09T09:00:00-03:00",
+      "finding": "grelha limpa",
+      "obstruction": false,
+      "method": "inspecao visual sintetica",
+      "reviewed_by_human": false
+    },
+    {
+      "id": "IV-103",
+      "point_id": "CANALETA-13",
+      "timestamp": "2026-11-08T11:20:00-03:00",
+      "finding": "sem obstrução visível",
+      "obstruction": false,
+      "method": "inspecao visual sintetica",
+      "reviewed_by_human": false
+    },
+    {
+      "id": "IV-104",
+      "point_id": "RALO-21",
+      "timestamp": "2026-11-07T09:00:00-03:00",
+      "finding": "folhas secas sobre a grelha",
+      "obstruction": true,
+      "method": "inspecao visual sintetica",
+      "reviewed_by_human": false
+    },
+    {
+      "id": "IV-105",
+      "point_id": "RALO-22",
+      "timestamp": "2026-11-09T19:10:00-03:00",
+      "finding": "garrafas e areia bloqueando a entrada",
+      "obstruction": true,
+      "method": "inspecao visual sintetica",
+      "reviewed_by_human": false
+    },
+    {
+      "id": "IV-106",
+      "point_id": "CANALETA-23",
+      "timestamp": "2026-11-06T14:30:00-03:00",
+      "finding": "sem obstrução visível",
+      "obstruction": false,
+      "method": "inspecao visual sintetica",
+      "reviewed_by_human": false
+    },
+    {
+      "id": "IV-107",
+      "point_id": "RALO-31",
+      "timestamp": "2026-11-09T16:55:00-03:00",
+      "finding": "lona plástica sobre a grelha",
+      "obstruction": true,
+      "method": "inspecao visual sintetica",
+      "reviewed_by_human": false
+    },
+    {
+      "id": "IV-108",
+      "point_id": "CANALETA-32",
+      "timestamp": "2026-11-09T17:00:00-03:00",
+      "finding": "sem obstrução visível",
+      "obstruction": false,
+      "method": "inspecao visual sintetica",
+      "reviewed_by_human": false
+    }
+  ],
+  "events": [
+    {
+      "id": "OC-101",
+      "location_id": "GAR-C",
+      "point_id": "RALO-11",
+      "opened_at": "2026-11-09T18:30:00-03:00",
+      "status": "aguardando_manutencao",
+      "priority": "alta",
+      "priority_reason": "LE-101 acima do limite de 10 cm e IV-101 registra obstrucao",
+      "summary": "agua acima do alerta e sedimento na grelha",
+      "evidence_ids": [
+        "LE-101",
+        "IV-101"
+      ]
+    },
+    {
+      "id": "OC-102",
+      "location_id": "GAR-C",
+      "point_id": "CANALETA-13",
+      "opened_at": "2026-11-08T11:30:00-03:00",
+      "status": "em_verificacao",
+      "priority": "media",
+      "priority_reason": "LE-105 acima do limite de 10 cm; IV-103 sem obstrucao",
+      "summary": "nivel acima do alerta sem obstrucao visivel",
+      "evidence_ids": [
+        "LE-105",
+        "IV-103"
+      ]
+    },
+    {
+      "id": "OC-103",
+      "location_id": "GAR-D",
+      "point_id": "RALO-21",
+      "opened_at": "2026-11-07T09:10:00-03:00",
+      "status": "concluida",
+      "priority": "media",
+      "priority_reason": "IV-104 registra obstrucao; LE-109 abaixo do limite",
+      "summary": "folhas na grelha",
+      "evidence_ids": [
+        "LE-109",
+        "IV-104"
+      ]
+    },
+    {
+      "id": "OC-104",
+      "location_id": "GAR-D",
+      "point_id": "RALO-22",
+      "opened_at": "2026-11-09T19:15:00-03:00",
+      "status": "aguardando_manutencao",
+      "priority": "alta",
+      "priority_reason": "LE-111 acima do limite de 10 cm e IV-105 registra obstrucao",
+      "summary": "agua acima do alerta e entrada bloqueada",
+      "evidence_ids": [
+        "LE-111",
+        "IV-105"
+      ]
+    },
+    {
+      "id": "OC-105",
+      "location_id": "DOC-1",
+      "point_id": "RALO-31",
+      "opened_at": "2026-11-09T17:05:00-03:00",
+      "status": "aguardando_manutencao",
+      "priority": "alta",
+      "priority_reason": "LE-115 acima do limite de 10 cm e IV-107 registra obstrucao",
+      "summary": "agua acima do alerta e lona sobre a grelha",
+      "evidence_ids": [
+        "LE-115",
+        "IV-107"
+      ]
+    }
+  ],
+  "maintenance_history": [
+    {
+      "id": "MAN-101",
+      "point_id": "RALO-11",
+      "event_id": null,
+      "timestamp": "2026-10-15T09:00:00-03:00",
+      "status": "concluida",
+      "action": "limpeza da caixa de captação e retirada de sedimento"
+    },
+    {
+      "id": "MAN-102",
+      "point_id": "RALO-21",
+      "event_id": "OC-103",
+      "timestamp": "2026-11-07T15:00:00-03:00",
+      "status": "concluida",
+      "action": "retirada de folhas e teste de escoamento"
+    },
+    {
+      "id": "MAN-103",
+      "point_id": "BOMBA-14",
+      "event_id": null,
+      "timestamp": "2026-09-30T10:00:00-03:00",
+      "status": "concluida",
+      "action": "revisão da boia e teste de acionamento da bomba"
+    },
+    {
+      "id": "MAN-104",
+      "point_id": "CANALETA-32",
+      "event_id": null,
+      "timestamp": "2026-10-22T08:00:00-03:00",
+      "status": "concluida",
+      "action": "desobstrução da canaleta com hidrojateamento"
+    }
+  ]
+}
