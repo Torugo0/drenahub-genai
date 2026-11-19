@@ -1,0 +1,54 @@
+"""API HTTP da Central DrenaHub para consultas somente leitura."""
+
+import json
+import os
+from pathlib import Path
+
+from fastapi import FastAPI, HTTPException
+from fastapi.concurrency import run_in_threadpool
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
+from .assistant import ask
+from .models import AskRequest, AskResponse, Configuration
+from .ollama_client import OllamaClient
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SCOREBOARD_PATH = ROOT / "avaliacao" / "resultados" / "placar.json"
+app = FastAPI(title="DrenaAssist", version="0.1.0", description="Assistente local para operacoes e manutencao de drenagem")
+origins = [item.strip() for item in os.getenv("DRENA_CORS_ORIGINS", "http://localhost:5173,http://localhost:3000").split(",") if item.strip()]
+app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=False, allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
+
+
+@app.get("/health")
+def health() -> dict[str, object]:
+    client = OllamaClient()
+    return {"status": "ok", "ollama_model_available": client.available(), "model": client.model, "operational_data": "synthetic"}
+
+
+@app.get("/assistant/configurations")
+def configurations() -> dict[str, object]:
+    return {
+        "model": OllamaClient().model,
+        "configurations": [
+            {"id": Configuration.baseline.value, "description": "LLM local sem documentos ou ferramentas"},
+            {"id": Configuration.rag.value, "description": "LLM local com documentos recuperados por embeddings"},
+            {"id": Configuration.agent.value, "description": "Mesma LLM com documentos e ferramentas de consulta operacional"},
+        ],
+    }
+
+
+@app.post("/assistant/ask", response_model=AskResponse)
+async def ask_endpoint(request: AskRequest):
+    result = await run_in_threadpool(ask, request.question, request.configuration, request.location_id, request.point_id)
+    if result.metadata.get("error"):
+        return JSONResponse(status_code=503, content=result.model_dump(mode="json"))
+    return result
+
+
+@app.get("/evaluation/results")
+def evaluation_results() -> dict[str, object]:
+    if not SCOREBOARD_PATH.exists():
+        raise HTTPException(status_code=404, detail="Avaliação ainda não executada")
+    return json.loads(SCOREBOARD_PATH.read_text(encoding="utf-8"))

@@ -1,0 +1,48 @@
+{
+  "dataset_id": "drenahub-sintetico-v1",
+  "synthetic": true,
+  "reference_date": "2026-11-19",
+  "description": "Registros ficticios e reproduziveis para demonstracao; nao representam instalacoes ou medicoes reais.",
+  "priority_rules": [
+    {"priority": "alta", "condition": "nivel de agua acima do limite de alerta e obstrucao visual registrada no mesmo ponto"},
+    {"priority": "media", "condition": "nivel de agua acima do limite de alerta ou obstrucao visual registrada"},
+    {"priority": "baixa", "condition": "nenhuma das duas condicoes anteriores"}
+  ],
+  "locations": [
+    {"id": "GAR-A", "name": "Garagem A", "type": "garagem", "unit": "Condominio Ipe"},
+    {"id": "GAR-B", "name": "Garagem B", "type": "garagem", "unit": "Condominio Ipe"},
+    {"id": "GAL-1", "name": "Galpao Norte", "type": "galpao", "unit": "Centro Logistico Norte"}
+  ],
+  "points": [
+    {"id": "RALO-01", "location_id": "GAR-A", "name": "Ralo 01", "type": "ralo", "alert_level_cm": 10.0, "external_ids": ["GARAGEM_A_RALO_01"]},
+    {"id": "CANALETA-02", "location_id": "GAR-A", "name": "Canaleta 02", "type": "canaleta", "alert_level_cm": 10.0, "external_ids": ["GARAGEM_A_CANALETA_02"]},
+    {"id": "BOMBA-01", "location_id": "GAR-A", "name": "Bomba 01", "type": "bomba", "alert_level_cm": 10.0, "external_ids": ["GARAGEM_A_BOMBA_01"]},
+    {"id": "RALO-02", "location_id": "GAR-B", "name": "Ralo 02", "type": "ralo", "alert_level_cm": 10.0, "external_ids": ["GARAGEM_B_RALO_02"]},
+    {"id": "RALO-03", "location_id": "GAL-1", "name": "Ralo 03", "type": "ralo", "alert_level_cm": 10.0, "external_ids": ["GALPAO_NORTE_RALO_03"]}
+  ],
+  "sensor_readings": [
+    {"id": "LE-001", "point_id": "RALO-01", "timestamp": "2026-11-18T17:30:00-03:00", "water_level_cm": 11.2, "status": "alerta"},
+    {"id": "LE-002", "point_id": "RALO-01", "timestamp": "2026-11-18T16:30:00-03:00", "water_level_cm": 8.4, "status": "normal"},
+    {"id": "LE-003", "point_id": "CANALETA-02", "timestamp": "2026-11-16T10:30:00-03:00", "water_level_cm": 4.1, "status": "normal"},
+    {"id": "LE-004", "point_id": "BOMBA-01", "timestamp": "2026-11-18T17:32:00-03:00", "water_level_cm": 6.2, "pump_state": "ligada", "status": "normal"},
+    {"id": "LE-005", "point_id": "RALO-02", "timestamp": "2026-11-18T09:00:00-03:00", "water_level_cm": 3.0, "status": "normal"},
+    {"id": "LE-006", "point_id": "RALO-03", "timestamp": "2026-11-18T17:25:00-03:00", "water_level_cm": 12.3, "status": "alerta"}
+  ],
+  "visual_inspections": [
+    {"id": "IV-001", "point_id": "RALO-01", "timestamp": "2026-11-18T17:40:00-03:00", "finding": "residuos visiveis obstruindo parcialmente a grelha", "obstruction": true, "method": "DrenaVision: classificacao visual sintetica para demonstracao", "reviewed_by_human": false},
+    {"id": "IV-002", "point_id": "CANALETA-02", "timestamp": "2026-11-16T10:00:00-03:00", "finding": "sem obstrucao visivel", "obstruction": false, "method": "inspecao visual sintetica", "reviewed_by_human": false},
+    {"id": "IV-003", "point_id": "RALO-02", "timestamp": "2026-11-18T09:00:00-03:00", "finding": "folhas acumuladas na grelha", "obstruction": true, "method": "inspecao visual sintetica", "reviewed_by_human": false},
+    {"id": "IV-004", "point_id": "RALO-03", "timestamp": "2026-11-18T16:15:00-03:00", "finding": "sem obstrucao visivel", "obstruction": false, "method": "inspecao visual sintetica", "reviewed_by_human": false}
+  ],
+  "events": [
+    {"id": "OC-001", "location_id": "GAR-A", "point_id": "RALO-01", "opened_at": "2026-11-18T17:45:00-03:00", "status": "aguardando_manutencao", "priority": "alta", "priority_reason": "LE-001 acima do limite de 10 cm e IV-001 registra obstrucao", "summary": "agua acima do alerta e residuos na grelha", "evidence_ids": ["LE-001", "IV-001"]},
+    {"id": "OC-002", "location_id": "GAR-B", "point_id": "RALO-02", "opened_at": "2026-11-18T09:10:00-03:00", "status": "aguardando_manutencao", "priority": "media", "priority_reason": "IV-003 registra obstrucao; LE-005 abaixo do limite", "summary": "folhas acumuladas na grelha", "evidence_ids": ["LE-005", "IV-003"]},
+    {"id": "OC-003", "location_id": "GAL-1", "point_id": "RALO-03", "opened_at": "2026-11-18T17:35:00-03:00", "status": "em_verificacao", "priority": "media", "priority_reason": "LE-006 acima do limite; IV-004 sem obstrucao visivel", "summary": "nivel de agua acima do alerta", "evidence_ids": ["LE-006", "IV-004"]},
+    {"id": "OC-004", "location_id": "GAR-A", "point_id": "CANALETA-02", "opened_at": "2026-11-16T11:00:00-03:00", "status": "concluida", "priority": "baixa", "priority_reason": "LE-003 abaixo do limite e IV-002 sem obstrucao", "summary": "verificacao preventiva concluida", "evidence_ids": ["LE-003", "IV-002"]}
+  ],
+  "maintenance_history": [
+    {"id": "MAN-001", "point_id": "RALO-01", "event_id": null, "timestamp": "2026-10-20T14:00:00-03:00", "status": "concluida", "action": "limpeza manual da grelha e teste de escoamento"},
+    {"id": "MAN-002", "point_id": "CANALETA-02", "event_id": "OC-004", "timestamp": "2026-11-16T15:00:00-03:00", "status": "concluida", "action": "inspecao e retirada de sedimentos"},
+    {"id": "MAN-003", "point_id": "RALO-02", "event_id": null, "timestamp": "2026-10-10T10:00:00-03:00", "status": "concluida", "action": "limpeza preventiva da grelha"}
+  ]
+}
